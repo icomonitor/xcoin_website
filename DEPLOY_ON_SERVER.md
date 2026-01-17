@@ -20,7 +20,7 @@ cd xcoin-website
 **Auf deinem lokalen Rechner (Mac/Terminal):**
 
 ```bash
-cd /Users/fabianschuck/Desktop/Xcoin_WebsiteGit
+cd /Users/fabianschuck/Desktop/xcoin_website
 scp -r ./* Xcoin@82.221.100.116:~/xcoin-website/
 ```
 
@@ -29,7 +29,7 @@ scp -r ./* Xcoin@82.221.100.116:~/xcoin-website/
 **Auf deinem lokalen Rechner:**
 
 ```bash
-cd /Users/fabianschuck/Desktop/Xcoin_WebsiteGit
+cd /Users/fabianschuck/Desktop/xcoin_website
 rsync -avz --exclude 'node_modules' --exclude '.next' --exclude '.git' ./ Xcoin@82.221.100.116:~/xcoin-website/
 ```
 
