@@ -32,6 +32,8 @@ const nextConfig = {
   // Experimental features
   experimental: {
     optimizePackageImports: ['lucide-react', 'gsap'],
+    // Enable optimized React rendering
+    optimizeCss: true,
   },
   
   // Output configuration (for Docker/server deployment)

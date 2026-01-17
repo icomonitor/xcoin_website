@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 import { Menu, X } from "lucide-react"
 import Image from "next/image"
 
@@ -19,40 +19,69 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
 
-  // Throttled scroll handler
+  // Optimized scroll handler with useCallback
+  const handleScroll = useCallback(() => {
+    setIsScrolled(window.scrollY > 50)
+  }, [])
+
+  // Optimized scroll event listener
   useEffect(() => {
+    let rafId: number | null = null
     let ticking = false
     
-    const handleScroll = () => {
+    const onScroll = () => {
       if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 50)
+        rafId = window.requestAnimationFrame(() => {
+          handleScroll()
           ticking = false
         })
         ticking = true
       }
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (rafId !== null) {
+        window.cancelAnimationFrame(rafId)
+      }
+    }
+  }, [handleScroll])
+
+  // Optimized body scroll lock with useCallback
+  const lockBodyScroll = useCallback((lock: boolean) => {
+    // Use requestAnimationFrame to avoid blocking
+    requestAnimationFrame(() => {
+      document.body.style.overflow = lock ? 'hidden' : ''
+    })
   }, [])
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
+    lockBodyScroll(mobileMenuOpen)
     return () => {
-      document.body.style.overflow = ''
+      lockBodyScroll(false)
     }
-  }, [mobileMenuOpen])
+  }, [mobileMenuOpen, lockBodyScroll])
+
+  // Memoize navigation links to prevent re-renders
+  const navigationLinks = useMemo(() => {
+    return navigation.map((item) => (
+      <Link
+        key={item.name}
+        href={item.href}
+        className="header-nav-link"
+        prefetch={true}
+      >
+        {item.name}
+        <span className="header-nav-link-underline" />
+      </Link>
+    ))
+  }, [])
 
   return (
     <header className={`header ${isScrolled ? 'header--scrolled' : ''}`}>
       <nav className="header-nav">
-        <Link href="/" className="header-logo" aria-label="Xcoin Home">
+        <Link href="/" className="header-logo" aria-label="Xcoin Home" prefetch={true}>
           <div className="header-logo-icon">
             <Image 
               src="/img/xcoin.svg" 
@@ -60,6 +89,7 @@ export default function Header() {
               width={40}
               height={40}
               className="header-logo-image"
+              priority
             />
             <div className="header-logo-glow" />
           </div>
@@ -68,16 +98,7 @@ export default function Header() {
 
         {/* Desktop Navigation */}
         <nav className="header-nav-desktop" aria-label="Main navigation">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="header-nav-link"
-            >
-              {item.name}
-              <span className="header-nav-link-underline" />
-            </Link>
-          ))}
+          {navigationLinks}
         </nav>
 
         {/* Desktop Actions */}
@@ -88,6 +109,7 @@ export default function Header() {
             style={{ 
               transform: isScrolled ? 'translateX(0.5rem) translateY(-0.25rem)' : 'translateX(0) translateY(0)'
             }}
+            prefetch={true}
           >
             Crowdfunding
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
@@ -98,6 +120,7 @@ export default function Header() {
             style={{ 
               transform: isScrolled ? 'translateX(0.5rem) translateY(-0.25rem)' : 'translateX(0) translateY(0)'
             }}
+            prefetch={false}
           >
             <div className="flex items-center gap-2 relative z-10">
               <span>Buy Token</span>
@@ -109,6 +132,7 @@ export default function Header() {
                   height={20}
                   className="brightness-0 group-hover:animate-spin"
                   style={{ animationDuration: '10000ms' }}
+                  loading="lazy"
                 />
               </div>
             </div>
@@ -163,6 +187,7 @@ export default function Header() {
                 href={item.href}
               className="link nav-link"
               onClick={() => setMobileMenuOpen(false)}
+              prefetch={true}
             >
               {item.hasDivider && <div className="nav-menu-divider"></div>}
               <p className="nav-link-text">{item.name}</p>
@@ -180,6 +205,7 @@ export default function Header() {
             href="/community"
             className="button is--dark"
             onClick={() => setMobileMenuOpen(false)}
+            prefetch={true}
           >
             <div className="u--clip u--rel">
               <p className="p-reg">Join Community</p>
@@ -190,6 +216,7 @@ export default function Header() {
             href="/crowdfunding"
             className="button"
             onClick={() => setMobileMenuOpen(false)}
+            prefetch={true}
           >
             <div className="u--clip u--rel">
               <p className="p-reg">Crowdfunding</p>
