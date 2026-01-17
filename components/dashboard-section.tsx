@@ -1,0 +1,575 @@
+"use client"
+
+import { useState, useEffect, useRef } from "react"
+import Link from "next/link"
+import Image from "next/image"
+import { usePathname } from "next/navigation"
+
+// GSAP Types - Using any for dynamic imports to avoid complex type issues
+interface GSAPModules {
+  gsap: any
+  ScrollTrigger: any
+}
+
+// GSAP lazy loading für bessere Performance
+let gsapLoaded = false
+let gsapPromise: Promise<GSAPModules> | null = null
+
+const loadGSAP = async (): Promise<GSAPModules> => {
+  if (gsapLoaded && gsapPromise) {
+    return await gsapPromise
+  }
+  if (gsapPromise) {
+    return await gsapPromise
+  }
+  
+  gsapPromise = Promise.all([
+    import("gsap"),
+    import("gsap/ScrollTrigger")
+  ]).then(([gsapModule, scrollTriggerModule]) => {
+    const gsap = gsapModule.default || gsapModule
+    const ScrollTrigger = scrollTriggerModule.default || scrollTriggerModule
+    
+    // Plugin registrieren
+    if (gsap && ScrollTrigger && typeof gsap.registerPlugin === 'function') {
+      gsap.registerPlugin(ScrollTrigger)
+    }
+    
+    gsapLoaded = true
+    return { gsap, ScrollTrigger }
+  })
+  
+  return await gsapPromise
+}
+
+interface DashboardItem {
+  id: number
+  category: string
+  title: string
+  image?: string
+  href: string
+}
+
+// Exactly 9 items per category for 3x3 grid
+const dashboardItems: DashboardItem[] = [
+  // Xcoin category - 9 items
+  {
+    id: 1,
+    category: "xcoin",
+    title: "Xcoin Will Replace Bitcoin",
+    image: "/img/xcoin_grid/box1.jpeg",
+    href: "/why-xcoin-replaces-bitcoin",
+  },
+  {
+    id: 2,
+    category: "xcoin",
+    title: "Crowdfunding",
+    image: "/img/xcoin_grid/crowdfunding.jpg",
+    href: "/crowdfunding",
+  },
+  {
+    id: 3,
+    category: "xcoin",
+    title: "The Man in the Background",
+    image: "/img/xcoin_grid/box3.jpeg",
+    href: "/the-man-in-the-background",
+  },
+  {
+    id: 4,
+    category: "xcoin",
+    title: "What is the XXX Blockchain?",
+    image: "/img/xcoin_grid/box4.jpeg",
+    href: "/what-is-xxx-blockchain",
+  },
+  {
+    id: 5,
+    category: "xcoin",
+    title: "Why Xcoin Is Better Than Monero, Zcash, or Bitcoin",
+    image: "/img/xcoin_grid/box5.jpeg",
+    href: "/why-xcoin-is-better",
+  },
+  {
+    id: 6,
+    category: "xcoin",
+    title: "Optional Compliance for Audits and Taxes",
+    image: "/img/xcoin_grid/compliance.jpg",
+    href: "/optional-compliance",
+  },
+  {
+    id: 7,
+    category: "xcoin",
+    title: "The Philosophy Behind Anonymous Finance",
+    image: "/img/xcoin_grid/anonymous_finance.jpg",
+    href: "/philosophy-behind-anonymous-finance",
+  },
+  {
+    id: 8,
+    category: "xcoin",
+    title: "Why Quantum-Safe Cryptography Matters",
+    image: "/img/xcoin_grid/quantum_safe.jpg",
+    href: "/quantum-safe",
+  },
+  {
+    id: 9,
+    category: "xcoin",
+    title: "Get XXX Tokens",
+    image: "/img/xcoin_grid/box8.jpeg",
+    href: "/what-are-xxx-tokens",
+  },
+  // Members category - 3 items
+  {
+    id: 10,
+    category: "members",
+    title: "Power in the Hands of the Community",
+    image: "/img/members_grid/power_in_the_hands_of_the_community.jpg",
+    href: "/power-in-the-hands-of-the-community",
+  },
+  {
+    id: 11,
+    category: "members",
+    title: "See What's Coming",
+    image: "/img/members_grid/see_whats_coming.jpg",
+    href: "/see-whats-coming",
+  },
+  {
+    id: 12,
+    category: "members",
+    title: "The Power of XXX DAO Members",
+    image: "/img/members_grid/the_power_of_xxx_dao_members.jpg",
+    href: "/the-power-of-xxx-dao-members",
+  },
+  // Validators category - 3 items
+  {
+    id: 19,
+    category: "validators",
+    title: "Earn Xcoin. Effortlessly.",
+    image: "/img/validators_grid/earn_xcoin_effortlessly.jpg",
+    href: "/validator",
+  },
+  {
+    id: 20,
+    category: "validators",
+    title: "Apply to Run a SEP Node",
+    image: "/img/validators_grid/apply_to_run_a_sep_node.jpg",
+    href: "/validator-application",
+  },
+  {
+    id: 21,
+    category: "validators",
+    title: "The Rise of the Validators",
+    image: "/img/validators_grid/the_rise_of_the_validators.jpg",
+    href: "/the-rise-of-validators",
+  },
+  // Whitepapers category - 3 items
+  {
+    id: 28,
+    category: "whitepapers",
+    title: "Every Revolution Begins with an Idea",
+    image: "/img/whitepapers_grid/every_revolution_begins_with_an_idea.jpg",
+    href: "/every-revolution-begins-with-an-idea",
+  },
+  {
+    id: 29,
+    category: "whitepapers",
+    title: "The Path to Bitcoin Replacement",
+    image: "/img/whitepapers_grid/the_path_to_bitcoin_replacement.jpg",
+    href: "/the-path-to-bitcoin-replacement",
+  },
+  {
+    id: 30,
+    category: "whitepapers",
+    title: "XXX DAO Governance Protocol",
+    image: "/img/whitepapers_grid/xxx_dao_governance_protocol.jpg",
+    href: "/xxx-dao-governance-protocol",
+  },
+  // Learning category - 6 items
+  {
+    id: 37,
+    category: "learning",
+    title: "Core Concepts",
+    image: "/img/learning_center_grid/core_concepts.jpg",
+    href: "/overview",
+  },
+  {
+    id: 38,
+    category: "learning",
+    title: "Cryptographic Foundations",
+    image: "/img/learning_center_grid/cryptographic_foundations.jpg",
+    href: "/overview",
+  },
+  {
+    id: 39,
+    category: "learning",
+    title: "Technology Architecture",
+    image: "/img/learning_center_grid/technology_architecture.jpg",
+    href: "/overview",
+  },
+  {
+    id: 40,
+    category: "learning",
+    title: "Governance DAO",
+    image: "/img/learning_center_grid/governance_dao.jpg",
+    href: "/overview",
+  },
+  {
+    id: 41,
+    category: "learning",
+    title: "Use Cases & Benefits",
+    image: "/img/learning_center_grid/use_cases_benefits.jpg",
+    href: "/overview",
+  },
+  {
+    id: 42,
+    category: "learning",
+    title: "Getting Involved",
+    image: "/img/learning_center_grid/getting_involved.jpg",
+    href: "/overview",
+  },
+]
+
+const navItems = [
+  { id: "xcoin", label: "Xcoin" },
+  { id: "members", label: "Members" },
+  { id: "validators", label: "Validators" },
+  { id: "whitepapers", label: "Whitepapers" },
+  { id: "learning", label: "Learning Center" },
+]
+
+const getNavButtonClasses = (isActive: boolean) =>
+  `db-nav__item group flex w-full items-center justify-start gap-4 rounded-lg p-3.5 transition-all ${
+    isActive
+      ? "bg-accent/10 text-accent"
+      : "text-muted-foreground hover:bg-secondary"
+  }`
+
+export default function DashboardSection() {
+  const [activeFilter, setActiveFilter] = useState("xcoin")
+  const pathname = usePathname()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const searchRef = useRef<HTMLDivElement>(null)
+  const sideRef = useRef<HTMLDivElement>(null)
+  const cardsRef = useRef<HTMLDivElement>(null)
+
+  // Scroll Animation - Optimiert mit Reload bei Navigation zurück
+  const initGSAPAnimation = (
+    gsap: any, // GSAP als any, da dynamische Imports komplexe Types haben
+    ScrollTrigger: any,
+    container: HTMLElement,
+    wrap: HTMLElement,
+    search: HTMLElement,
+    side: HTMLElement,
+    cards: NodeListOf<Element>,
+    contents: NodeListOf<Element>,
+    isTablet: boolean
+  ) => {
+    // GSAP und ScrollTrigger sind bereits geladen und registriert
+
+    // WICHTIG: Alle bestehenden ScrollTriggers für diesen Container killen
+    if (ScrollTrigger && typeof ScrollTrigger.getAll === 'function') {
+      ScrollTrigger.getAll().forEach((trigger: any) => {
+        if (trigger.trigger === container) {
+          trigger.kill()
+        }
+      })
+    }
+
+    // WICHTIG: Alle laufenden GSAP-Animationen stoppen und zurücksetzen
+    if (gsap && typeof gsap.killTweensOf === 'function') {
+      gsap.killTweensOf([wrap, search, side, cards, contents])
+    }
+    
+    // WICHTIG: Alle Elemente auf Startpositionen zurücksetzen
+    if (gsap && typeof gsap.set === 'function') {
+      gsap.set(wrap, { rotateX: '20deg', z: '-20em', clearProps: 'all' })
+      gsap.set(search, { z: '40em', autoAlpha: 0, clearProps: 'all' })
+      gsap.set(side, { z: '35em', autoAlpha: 0, clearProps: 'all' })
+      cards.forEach((card, i) => {
+        gsap.set(card, { z: `${35 - i * 5}em`, clearProps: 'all' })
+      })
+      gsap.set(contents, { autoAlpha: 0, clearProps: 'all' })
+      gsap.set(container, { pointerEvents: 'none' })
+    }
+
+    // Kurze Verzögerung, damit DOM bereit ist und ScrollTrigger richtig initialisiert wird
+    const initTimer = setTimeout(() => {
+      if (!gsap || typeof gsap.timeline !== 'function') return
+      
+      // Scroll Intro Timeline
+      const scrollIntroTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: container,
+          start: 'top bottom',
+          // Tablet: Animation früher beenden
+          // Desktop: Original
+          end: isTablet 
+            ? 'top center+=10%'  // Etwas früher als Desktop
+            : 'bottom bottom+=15%',  // Original für Desktop
+          scrub: true,
+          refreshPriority: 1, // Wichtig für Navigation
+          invalidateOnRefresh: true,
+        },
+        defaults: {
+          ease: 'none',
+        },
+      })
+
+      scrollIntroTl
+        .from(wrap, { rotateX: '20deg', z: '-20em' })
+        .from(search, { z: '40em', autoAlpha: 0 }, '<')
+        .from(side, { z: '35em', autoAlpha: 0 }, '<')
+        .from(
+          cards,
+          {
+            z: (i: number) => `${35 - i * 5}em`,
+            stagger: 0.01,
+          },
+          '<'
+        )
+        // Bilder erscheinen WÄHREND der Animation ab 30%
+        .to(contents, { autoAlpha: 1, duration: 0.4, stagger: 0.02 }, 0.3)
+        .set(container, { pointerEvents: 'auto' }, 0.5)
+
+      // Prüfen, ob Container bereits im Viewport ist (nach kurzer Verzögerung)
+      const checkViewport = () => {
+        if (!gsap || typeof gsap.set !== 'function') return
+        
+        const rect = container.getBoundingClientRect()
+        const scrollY = window.scrollY
+        const containerTop = container.offsetTop
+        const endOffset = isTablet ? window.innerHeight * 0.6 : window.innerHeight * 1.15
+        
+        // Wenn Container bereits sichtbar ist und Scroll-Position über End-Punkt
+        if (rect.top < window.innerHeight && scrollY + window.innerHeight > containerTop + endOffset) {
+          // Animation ist bereits durchgelaufen - alles sofort sichtbar machen
+          gsap.set(contents, { autoAlpha: 1 })
+          gsap.set([search, side], { autoAlpha: 1, z: 0 })
+          gsap.set([wrap, cards], { rotateX: 0, z: 0 })
+          gsap.set(container, { pointerEvents: 'auto' })
+          if (scrollIntroTl && typeof scrollIntroTl.progress === 'function') {
+            scrollIntroTl.progress(1)
+          }
+        }
+      }
+
+      // Nach ScrollTrigger-Initialisierung prüfen
+      setTimeout(checkViewport, 100)
+
+      // ScrollTrigger refresh nach Initialisierung
+      if (ScrollTrigger && typeof ScrollTrigger.refresh === 'function') {
+        ScrollTrigger.refresh()
+      }
+    }, 100)
+
+    // Cleanup-Funktion zurückgeben
+    return () => {
+      clearTimeout(initTimer)
+      if (ScrollTrigger && typeof ScrollTrigger.getAll === 'function') {
+        ScrollTrigger.getAll().forEach((trigger: any) => {
+          if (trigger.trigger === container) {
+            trigger.kill()
+          }
+        })
+      }
+      // Alle Animationen stoppen
+      if (gsap && typeof gsap.killTweensOf === 'function') {
+        gsap.killTweensOf([wrap, search, side, cards, contents])
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    // Nur auf Startseite initialisieren
+    if (pathname !== '/') return
+    
+    const container = containerRef.current
+    const wrap = wrapperRef.current
+    const search = searchRef.current
+    const side = sideRef.current
+    const cards = cardsRef.current?.querySelectorAll('.db-content__card')
+    const contents = container?.querySelectorAll('[data-db-el]')
+
+    if (!container || !wrap || !search || !side || !cards || !contents) return
+
+    // Mobile Detection - auf Mobile sofort sichtbar, keine Animation
+    const isMobile = window.innerWidth <= 768
+    const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768
+
+    // Mobile: Direkt sichtbar, keine Animation für sofortige Sichtbarkeit
+    if (isMobile) {
+      // GSAP nicht laden auf Mobile
+      if (contents) {
+        Array.from(contents).forEach((el: Element) => {
+          if (el instanceof HTMLElement) {
+            el.style.opacity = '1'
+          }
+        })
+      }
+      if (container) container.style.pointerEvents = 'auto'
+      return // Keine ScrollTrigger auf Mobile - Bilder sind sofort sichtbar
+    }
+
+    // GSAP lazy loading - nur wenn Komponente sichtbar wird
+    let cleanup: (() => void) | null = null
+    const observer = new IntersectionObserver(
+      async (entries) => {
+        if (entries[0].isIntersecting) {
+          observer.disconnect()
+          // GSAP jetzt laden
+          const { gsap, ScrollTrigger } = await loadGSAP()
+          if (gsap && ScrollTrigger) {
+            cleanup = initGSAPAnimation(gsap, ScrollTrigger, container, wrap, search, side, cards, contents, isTablet)
+          }
+        }
+      },
+      { threshold: 0.1, rootMargin: '100px' }
+    )
+
+    observer.observe(container)
+
+    return () => {
+      observer.disconnect()
+      if (cleanup) cleanup()
+    }
+  }, [pathname])
+
+  return (
+    <section className="relative mt-8 pb-16">
+      <div className="mx-auto max-w-[110rem] px-[2mm]">
+        {/* Dashboard Container - wie bei Basti */}
+        <div className="db-container" id="overview" ref={containerRef}>
+          <div className="db-wrapper" ref={wrapperRef}>
+            {/* Background Base */}
+            <div className="db-base"></div>
+            
+            {/* Privacy is Power Button */}
+            <div className="db-search" ref={searchRef}>
+              <Link
+                href="/community"
+                aria-label="Become a member"
+                className="relative inline-flex items-center justify-center gap-2 border-2 border-accent bg-accent px-11 py-2.5 sm:px-12 sm:py-3 p-reg font-semibold text-accent-foreground whitespace-nowrap transition-all hover:scale-105 dashboard-banner"
+              >
+                <span>Privacy is Power</span>
+              </Link>
+            </div>
+
+            {/* Sidebar Navigation */}
+            <div className="db-side" ref={sideRef}>
+              <div className="db-side__inner">
+                <div className="db-side__top">
+                  <nav className="db-side__nav">
+                    {navItems.map((item) => (
+                      <button
+                        key={item.id}
+                        onClick={() => setActiveFilter(item.id)}
+                        data-filter={item.id}
+                        className={getNavButtonClasses(activeFilter === item.id)}
+                        aria-label={item.label}
+                        title={item.label}
+                        type="button"
+                      >
+                        <div className="db-nav__icon flex h-12 w-12 items-center justify-center">
+                          <Image
+                            src="/img/xcoin.svg"
+                            alt={item.label}
+                            width={45}
+                            height={45}
+                            className="animate-spin [animation-duration:10000ms] object-contain"
+                            unoptimized
+                          />
+                        </div>
+                        <p className="text-lg font-semibold transition-colors duration-300 group-hover:text-cyan-400 sm:hidden lg:block">
+                          {item.label}
+                        </p>
+                      </button>
+                    ))}
+                  </nav>
+                </div>
+              </div>
+            </div>
+
+            {/* Content Grid */}
+            <div className="db-content" ref={cardsRef}>
+              {dashboardItems
+                .filter(item => item.category === activeFilter)
+                .map((item) => (
+                  <div
+                    key={item.id}
+                    data-category={item.category}
+                    data-db-el=""
+                    className="db-content__card group"
+                  >
+                  <Link href={item.href} className="block w-full h-full">
+                    <div className="db-card__visual">
+                      <div className="dash-res-card__visual-before"></div>
+                      {item.image ? (
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="dash-res-card__visual-img"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      ) : (
+                        <div className="flex h-full items-center justify-center bg-gradient-to-br from-accent/10 via-background to-background">
+                          <div className="text-center">
+                            <div className="mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-accent/10">
+                              <Image
+                                src="/img/xcoin.svg"
+                                alt="Xcoin"
+                                width={32}
+                                height={32}
+                                className="object-contain"
+                              />
+                            </div>
+                            <p className="p-small text-muted-foreground capitalize">
+                              {item.category}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <div className="db-card__info">
+                      <div className="db-card__info-start">
+                        <p className="p-small">{item.title}</p>
+                      </div>
+                      <div className="db-card__info-end">
+                        <div className="db-card__arrow">
+                          <div className="db-card__arrow-back"></div>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="100%"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            className="db-card__arrow-svg"
+                          >
+                            <path
+                              d="M10 17L15 12"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M10 7L15 12"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

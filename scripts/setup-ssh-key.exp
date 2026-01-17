@@ -1,0 +1,40 @@
+#!/usr/bin/expect -f
+
+set timeout 30
+set host "82.221.100.116"
+set user "Xcoin"
+set password "FLduSONDedfRfsw52g3jfD93SsFfs!"
+
+# Read public key
+set pubkey_file [open "$env(HOME)/.ssh/id_rsa.pub" r]
+set pubkey [read $pubkey_file]
+close $pubkey_file
+set pubkey [string trimright $pubkey]
+
+spawn ssh -o StrictHostKeyChecking=no $user@$host
+
+expect {
+    "yes/no" {
+        send "yes\r"
+        exp_continue
+    }
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    "\$ " {
+        send "mkdir -p ~/.ssh && chmod 700 ~/.ssh\r"
+        expect "\$ "
+        send "echo '$pubkey' >> ~/.ssh/authorized_keys\r"
+        expect "\$ "
+        send "chmod 600 ~/.ssh/authorized_keys\r"
+        expect "\$ "
+        send "exit\r"
+        expect eof
+    }
+    timeout {
+        puts "Timeout - SSH-Verbindung fehlgeschlagen"
+        exit 1
+    }
+    eof
+}

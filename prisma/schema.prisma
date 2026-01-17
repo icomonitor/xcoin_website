@@ -1,0 +1,44 @@
+// Prisma Schema für Xcoin Website
+// Datenbank: PostgreSQL (empfohlen) oder MySQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // Oder "mysql" für MySQL
+  url      = env("DATABASE_URL")
+}
+
+// Contact Form Submissions
+model Contact {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([createdAt])
+  @@map("contacts")
+}
+
+// Validator Applications
+model ValidatorApplication {
+  id              String   @id @default(cuid())
+  name            String
+  email           String
+  serverSpecs     String   @db.Text
+  connectionSpeed String
+  location        String
+  status          String   @default("pending") // pending, approved, rejected
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
+  @@unique([email]) // Eine Application pro Email (oder entfernen für mehrere)
+  @@map("validator_applications")
+}

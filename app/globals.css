@@ -1,0 +1,4012 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+
+/* Font Face Definitions - PP Neue Montreal */
+@font-face {
+  font-family: "PP Neue Montreal";
+  src: url("/fonts/PPNeueMontreal-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Neue Montreal";
+  src: url("/fonts/PPNeueMontreal-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Neue Montreal";
+  src: url("/fonts/PPNeueMontreal-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Font Face Definitions - RM Mono */
+@font-face {
+  font-family: "RM Mono";
+  src: url("/fonts/RMMono-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Updated accent color to cyan blue #7eeefe from the Xcoin logo */
+:root {
+  --background: oklch(0.98 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.96 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.45 0 0);
+  /* Cyan blue accent from Xcoin_Basti #93c5fd */
+  --accent: oklch(0.78 0.10 240);
+  --accent-foreground: oklch(0.15 0.02 195);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.9 0 0);
+  --input: oklch(0.9 0 0);
+  --ring: oklch(0.88 0.12 195);
+  --radius: 0.625rem;
+  /* XCoin_Basti variables */
+  --gap-tiny: 0.5em;
+  --gap-large: 1.5em;
+  --card--radius-small: 0.5em;
+  --card--radius-reg: 0.75em;
+  --card--border-color: rgba(239, 238, 236, 0.14);
+}
+
+.dark {
+  --background: oklch(0.08 0.015 200);
+  --foreground: oklch(0.95 0 0);
+  --card: oklch(0.12 0.015 200);
+  --card-foreground: oklch(0.95 0 0);
+  --primary: oklch(0.95 0 0);
+  --primary-foreground: oklch(0.12 0.015 200);
+  --secondary: oklch(0.18 0.015 200);
+  --secondary-foreground: oklch(0.95 0 0);
+  --muted: oklch(0.18 0.015 200);
+  --muted-foreground: oklch(0.65 0 0);
+  /* Cyan blue accent from Xcoin_Basti #93c5fd */
+  --accent: oklch(0.78 0.10 240);
+  --accent-foreground: oklch(0.12 0.02 195);
+  --destructive: oklch(0.5 0.2 25);
+  --destructive-foreground: oklch(0.95 0 0);
+  --border: oklch(0.22 0.015 200);
+  --input: oklch(0.22 0.015 200);
+  --ring: oklch(0.88 0.12 195);
+}
+
+@theme inline {
+  --font-sans: "PP Neue Montreal", Arial, sans-serif;
+  --font-mono: "RM Mono", monospace;
+  --font-heading: "PP Neue Montreal", Arial, sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    overflow-x: hidden;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y pan-x;
+    font-family: "PP Neue Montreal", Arial, sans-serif;
+    font-weight: 500;
+    line-height: 1;
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+  }
+  html {
+    overflow-x: hidden;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y pan-x;
+    height: auto;
+    position: relative;
+  }
+}
+
+/* Text Size Classes from XCoin_Basti */
+.eyebrow {
+  text-transform: uppercase;
+  font-family: "RM Mono", monospace;
+  font-size: 0.75em;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.eyebrow.small {
+  font-size: 0.65em;
+}
+
+.p-small {
+  font-size: 0.875em;
+  line-height: 1.3;
+  font-family: "PP Neue Montreal", Arial, sans-serif;
+}
+
+.p-reg {
+  font-size: 1em;
+  line-height: 1.4;
+  font-family: "PP Neue Montreal", Arial, sans-serif;
+}
+
+.p-med {
+  font-size: 1.125em;
+  font-family: "PP Neue Montreal", Arial, sans-serif;
+}
+
+.p-large {
+  font-size: 1.25em;
+  line-height: 1.4;
+  font-family: "PP Neue Montreal", Arial, sans-serif;
+}
+
+.h-small {
+  letter-spacing: -0.02em;
+  font-size: 1.75em;
+  font-weight: 500;
+  line-height: 1;
+  font-family: "PP Neue Montreal", Arial, sans-serif;
+}
+
+.h-medium {
+  font-size: 3.375em;
+  font-weight: 500;
+  line-height: 1;
+  font-family: "PP Neue Montreal", Arial, sans-serif;
+}
+
+.h-large {
+  font-size: 5em;
+  font-weight: 500;
+  line-height: 1;
+  font-family: "PP Neue Montreal", Arial, sans-serif;
+}
+
+.h-display {
+  letter-spacing: -0.01em;
+  font-size: 5.625em;
+  font-weight: 500;
+  line-height: 0.95;
+  font-family: "PP Neue Montreal", Arial, sans-serif;
+}
+
+.h-price {
+  font-size: 3em;
+  font-weight: 500;
+  line-height: 1;
+  font-family: "PP Neue Montreal", Arial, sans-serif;
+}
+
+/* ============================================
+   KONSISTENTES RESPONSIVE TYPOGRAPHY SYSTEM
+   ============================================ */
+
+/* Desktop - clamp für flüssige Skalierung */
+@media screen and (min-width: 768px) {
+  .h-display {
+    font-size: clamp(4.5em, 6vw, 6.5em);
+  }
+}
+
+/* Tablet (max-width: 1024px) */
+@media screen and (max-width: 1024px) {
+  /* Headlines */
+  .h-display {
+    font-size: 4.5em;
+  }
+  
+  .h-large {
+    font-size: 4em;
+  }
+  
+  .h-medium {
+    font-size: 2.8em;
+  }
+  
+  .h-price {
+    font-size: 2.5em;
+  }
+  
+  .h-small {
+    font-size: 1.5em;
+  }
+  
+  /* Texte */
+  .p-med {
+    font-size: 1em;
+  }
+  
+  .p-reg {
+    font-size: 0.9375em;
+    line-height: 1.5;
+  }
+  
+  .p-small {
+    font-size: 0.8125em;
+  }
+}
+
+/* Mobile (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  /* Headlines - konsistent kleiner */
+  .h-display {
+    font-size: 2.5rem;
+    line-height: 1.1;
+  }
+  
+  .h-large {
+    font-size: 2.5rem !important;
+    line-height: 1.1 !important;
+  }
+  
+  .h-medium {
+    font-size: 2rem !important;
+    line-height: 1.2;
+  }
+  
+  .h-price {
+    font-size: 2rem !important;
+    line-height: 1.1;
+  }
+  
+  .h-small {
+    font-size: 1.5rem !important;
+    line-height: 1.2;
+  }
+  
+  /* Texte - besser lesbar */
+  .p-med {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  
+  .p-reg {
+    font-size: 0.9375rem !important;
+    line-height: 1.6 !important;
+  }
+  
+  .p-small {
+    font-size: 0.8125rem !important;
+    line-height: 1.5;
+  }
+  
+  .eyebrow {
+    font-size: 0.6875rem;
+  }
+  
+  .eyebrow.small {
+    font-size: 0.625rem;
+  }
+  
+  /* Section Padding konsistent */
+  section {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Container Padding */
+  .mx-auto.max-w-7xl,
+  .mx-auto.max-w-4xl,
+  .mx-auto.max-w-3xl {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Sehr kleine Screens (max-width: 480px) */
+@media screen and (max-width: 480px) {
+  /* Headlines - noch kleiner */
+  .h-display {
+    font-size: 2rem;
+    line-height: 1.15;
+  }
+  
+  .h-large {
+    font-size: 2rem !important;
+    line-height: 1.15 !important;
+  }
+  
+  .h-medium {
+    font-size: 1.75rem !important;
+    line-height: 1.25;
+  }
+  
+  .h-price {
+    font-size: 1.75rem !important;
+  }
+  
+  .h-small {
+    font-size: 1.25rem !important;
+    line-height: 1.3;
+  }
+  
+  /* Texte */
+  .p-med {
+    font-size: 0.875rem;
+  }
+  
+  .p-reg {
+    font-size: 0.875rem !important;
+    line-height: 1.6;
+  }
+  
+  .p-small {
+    font-size: 0.75rem !important;
+  }
+}
+
+/* Hide scrollbar for testimonials section */
+.testimonials-section-scroll::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.testimonials-section-scroll {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+/* Testimonial Cards Styles */
+.testimonial-item {
+  border: 1px solid hsl(var(--border)) !important; /* WICHTIG: Border wie bei Community */
+  border-radius: 16px !important; /* WICHTIG: 1rem = 16px (wie bei Community rounded-2xl) */
+  background-color: hsl(var(--card));
+  position: relative;
+}
+
+/* Testimonial Cards Mobile - responsive */
+@media (max-width: 768px) {
+  /* Testimonial Item - kleiner auf Mobile */
+  .testimonial-item {
+    width: 320px !important; /* Statt 420px */
+    min-height: 16rem !important; /* Statt 20rem */
+    padding: 1.25rem 1.25rem !important; /* Statt 2rem 1.75rem */
+    border: 1px solid hsl(var(--border)) !important; /* WICHTIG: Border wie bei Community */
+    border-radius: 16px !important; /* WICHTIG: 1rem = 16px (abgerundete Ecken) */
+  }
+
+  /* Quote Text kleiner */
+  .testimonial-item p {
+    font-size: 1rem !important; /* Statt 1.125em */
+    line-height: 1.5 !important;
+    margin-bottom: 1rem !important; /* Statt 1.5rem */
+  }
+
+  /* Avatar kleiner */
+  .testimonial-item .w-12 {
+    width: 2.5rem !important; /* Statt 3rem (48px) */
+    height: 2.5rem !important;
+  }
+
+  /* Name und Title kleiner */
+  .testimonial-item h4 {
+    font-size: 0.6875rem !important; /* Statt 0.75em */
+  }
+
+  .testimonial-item p[style*="font-family: var(--font-mono)"] {
+    font-size: 0.6875rem !important;
+  }
+
+  /* Corner Brackets - wie im Dashboard (w-4 h-4 = 16px) */
+  .testimonial-item .absolute[style*="top: '-2mm'"],
+  .testimonial-item .absolute[style*="bottom: '-2mm'"],
+  .testimonial-item .absolute[style*="left: '-2mm'"],
+  .testimonial-item .absolute[style*="right: '-2mm'"] {
+    width: 1rem !important; /* w-4 = 16px (wie im Dashboard) */
+    height: 1rem !important;
+    border-width: 2px !important; /* border-2 = 2px (wie im Dashboard) */
+  }
+
+  /* Gap zwischen Cards kleiner */
+  .testimonials-section-scroll {
+    gap: 1rem !important; /* Statt 1.5rem (24px) */
+  }
+
+  /* Avatar Buttons oben kleiner */
+  .testimonials-section button .rounded-full {
+    width: 3rem !important; /* Statt 60px */
+    height: 3rem !important;
+  }
+
+  .testimonials-section button .rounded-full img {
+    width: 3rem !important;
+    height: 3rem !important;
+  }
+
+  /* Name unter Avatar kleiner */
+  .testimonials-section button .eyebrow {
+    font-size: 0.6875rem !important; /* Statt 0.75em */
+  }
+}
+
+/* Sehr kleine Screens - noch kompakter */
+@media (max-width: 480px) {
+  .testimonial-item {
+    width: 280px !important; /* Noch kleiner */
+    min-height: 14rem !important;
+    padding: 1rem !important;
+    border: 1px solid hsl(var(--border)) !important; /* WICHTIG: Border wie bei Community */
+    border-radius: 16px !important; /* WICHTIG: 1rem = 16px (abgerundete Ecken) */
+  }
+
+  .testimonial-item p {
+    font-size: 0.9375rem !important;
+    margin-bottom: 0.875rem !important;
+  }
+
+  .testimonial-item .w-12 {
+    width: 2.25rem !important;
+    height: 2.25rem !important;
+  }
+
+  .testimonials-section button .rounded-full {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+  }
+}
+
+/* Hide scrollbar globally for horizontal scroll */
+.overflow-x-auto::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.overflow-x-auto {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+/* Shimmer animation for video border */
+@keyframes shimmer {
+  0% {
+    box-shadow: 0 0 20px rgba(147, 197, 253, 0.5), 0 0 40px rgba(147, 197, 253, 0.3), inset 0 0 20px rgba(147, 197, 253, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(147, 197, 253, 0.7), 0 0 60px rgba(147, 197, 253, 0.5), inset 0 0 30px rgba(147, 197, 253, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(147, 197, 253, 0.5), 0 0 40px rgba(147, 197, 253, 0.3), inset 0 0 20px rgba(147, 197, 253, 0.2);
+  }
+}
+
+/* Video Play Button Styles from XCoin_Basti */
+.video-play-button-modern {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.play-button-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.play-button-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transition: background 0.3s ease;
+}
+
+.play-button-pulse-blue {
+  background: rgba(147, 197, 253, 0.9); /* #93c5fd with opacity */
+  animation: pulse-ring-blue 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.play-button-icon {
+  position: relative;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  color: rgba(255, 255, 255, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 4px; /* Slight offset for visual centering */
+  transition: color 0.3s ease;
+}
+
+.play-button-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.play-button-icon-blue {
+  color: #93c5fd; /* Logo blue */
+  filter: drop-shadow(0 0 8px rgba(147, 197, 253, 0.6)) drop-shadow(0 0 16px rgba(147, 197, 253, 0.4));
+}
+
+.play-button-glow {
+  position: absolute;
+  inset: -15px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+  filter: blur(15px);
+  transition: background 0.3s ease, opacity 0.3s ease;
+  z-index: 1;
+  opacity: 0.9;
+}
+
+.play-button-glow-blue {
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.8) 0%, rgba(147, 197, 253, 0.5) 30%, rgba(147, 197, 253, 0.3) 50%, transparent 70%);
+  opacity: 1;
+  filter: blur(24px);
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-ring-blue {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* ============================================
+   HERO SECTION - OPTIMIZED
+   ============================================ */
+.hero-section {
+  position: relative;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: calc(13em - 1cm); /* 13em minus 1cm Abstand nach oben zum Header */
+  padding-bottom: 8rem;
+}
+
+/* Mobile: Reduzierter Abstand */
+@media (max-width: 767px) {
+  .hero-section {
+    padding-top: calc(6rem - 1cm); /* Reduzierter Abstand auf Mobile, minus 1cm */
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-section {
+    padding-bottom: 10rem;
+  }
+}
+
+.hero-video-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden; /* Wichtig: Verhindert Overflow */
+}
+
+.hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Video nimmt immer die volle Breite ODER Höhe ein, je nachdem was größer ist */
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  object-position: center center;
+  pointer-events: none;
+  transition: opacity 0.5s ease-in;
+}
+
+/* Mobile: Video wird jetzt angezeigt, aber optimiert */
+@media (max-width: 767px) {
+  .hero-video {
+    /* Video auf Mobile anzeigen */
+    display: block;
+    /* Leichtes Scale für bessere Abdeckung */
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  
+  /* Fallback-Hintergrund nur wenn Video nicht geladen */
+  .hero-video-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom right, #0f172a, #1e3a8a, #0f172a);
+    opacity: 0; /* Versteckt wenn Video läuft */
+    transition: opacity 0.5s;
+    z-index: -2;
+  }
+  
+  /* Fallback sichtbar wenn Video nicht geladen (opacity: 0) */
+  .hero-video-container:has(.hero-video[style*="opacity: 0"])::before {
+    opacity: 1;
+  }
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.hero-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top left, #93c5fd, #93c5fd);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* Hero Video Loader */
+.hero-video-loader {
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+
+.hero-video-loader-spinner {
+  width: 100%;
+  height: 100%;
+  border: 3px solid rgba(147, 197, 253, 0.2);
+  border-top-color: #93c5fd;
+  border-radius: 50%;
+  animation: hero-video-spin 1s linear infinite;
+}
+
+@keyframes hero-video-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hero-content {
+  margin-left: auto;
+  margin-right: 0; /* Margin rechts entfernen */
+  width: 100%;
+  position: relative;
+  z-index: 20;
+  max-width: 100%; /* Max-width auf 100% setzen */
+  padding-left: clamp(1rem, 1.5vw, 3rem);
+  padding-right: clamp(1rem, 1.5vw, 3rem); /* Padding rechts hinzugefügt für symmetrischen Abstand */
+  padding-top: clamp(3rem, 5vh, 6rem);
+  padding-bottom: clamp(3rem, 5vh, 6rem);
+}
+
+/* Mobile: Mehr Abstand oben */
+@media (max-width: 767px) {
+  .hero-content {
+    padding-top: clamp(3rem, 6vh, 5rem) !important; /* Mehr Abstand nach oben auf Mobile */
+    padding-left: clamp(1rem, 1.5vw, 3rem); /* Gleicher Abstand links und rechts */
+    padding-right: clamp(1rem, 1.5vw, 3rem); /* Gleicher Abstand links und rechts */
+  }
+}
+
+.hero-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 4vw, 4.5rem);
+  padding-right: 0; /* Padding rechts entfernt */
+  margin-right: 0; /* Margin rechts entfernt */
+}
+
+@media (min-width: 768px) {
+  .hero-inner {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: clamp(1rem, 2vw, 2rem); /* Gap reduziert */
+  }
+}
+
+.hero-features {
+  display: none;
+  flex-shrink: 0;
+  gap: clamp(0.5rem, 0.8vw, 1rem); /* Reduzierter Abstand zwischen Spalten */
+  margin-left: 0; /* Fester Abstand - kein negativer Wert */
+  margin-right: 0; /* Fester Abstand - kein negativer Wert */
+  margin-top: 0.5em; /* Minimaler Abstand nach oben */
+}
+
+@media (min-width: 768px) {
+  .hero-features {
+    display: flex;
+    margin-left: 0; /* Kein Abstand nach außen */
+    margin-right: 0; /* Kein Abstand nach außen */
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-features {
+    margin-left: 0; /* Kein Abstand nach außen */
+    margin-right: 0; /* Kein Abstand nach außen */
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-features {
+    margin-left: 0; /* Kein Abstand nach außen */
+    margin-right: 0; /* Kein Abstand nach außen */
+  }
+}
+
+.hero-feature-column {
+  width: clamp(14rem, 16vw, 18rem);
+}
+
+/* Abstand nach rechts für die rechte Spalte (Quantum-Safe Security, etc.) */
+.hero-feature-column:last-child {
+  margin-right: 0.5cm; /* Halber Zentimeter Abstand nach rechts */
+}
+
+.hero-feature-item {
+  color: rgb(156, 163, 175);
+  margin-bottom: calc(0.125rem + 2mm); /* 2mm mehr Abstand zwischen Zeilen */
+  font-size: clamp(1.05em, 1.25vw, 1.35em); /* Etwas größer: von 0.95em-1.2em auf 1.05em-1.35em */
+}
+
+.hero-feature-item:last-child {
+  margin-bottom: 0;
+}
+
+.hero-main {
+  flex: 1;
+  max-width: none; /* Max-width entfernen */
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 6.5vw, 7.5em); /* 7.5em auf Desktop */
+  font-weight: 500;
+  line-height: 0.95;
+  margin-bottom: clamp(1.5rem, 2.5vh, 2.5rem); /* Abstand zu den Buttons erhöht */
+  color: white;
+  letter-spacing: -0.01em;
+  font-family: var(--font-heading);
+}
+
+/* Abstand zwischen Titel und Buttons */
+.hero-buttons-container {
+  margin-top: clamp(1.5rem, 2.5vh, 2.5rem) !important; /* Abstand erhöht */
+  display: none; /* Standardmäßig versteckt (Mobile) */
+  flex-direction: column;
+  gap: clamp(0.5rem, 1vw, 1rem);
+  width: 100%;
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .hero-buttons-container {
+    display: flex; /* Nur auf Desktop anzeigen */
+    flex-direction: row;
+    gap: clamp(0.75rem, 1.5vw, 1.5rem);
+  }
+}
+
+.hero-buttons-desktop {
+  display: none;
+  flex-direction: column;
+  gap: clamp(0.5rem, 0.8vw, 1rem);
+  margin-top: clamp(1rem, 1.5vh, 1.5rem);
+}
+
+@media (min-width: 640px) {
+  .hero-buttons-desktop {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-buttons-desktop {
+    display: flex;
+  }
+}
+
+.hero-buttons-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.hero-buttons-mobile .hero-button {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875em;
+}
+
+@media (min-width: 768px) {
+  .hero-buttons-mobile {
+    display: none;
+  }
+}
+
+/* Hero Buttons - XCoin_Basti Style - Responsive */
+.hero-button {
+  color: var(--foreground);
+  background-color: transparent;
+  border: 1px solid transparent;
+  justify-content: center;
+  align-items: center;
+  height: clamp(3.5em, 4.5vw, 4.275em); /* Responsive Höhe */
+  padding-left: clamp(1.5em, 3vw, 2.6136em); /* Responsive Padding */
+  padding-right: clamp(1.5em, 3vw, 2.6136em); /* Responsive Padding */
+  display: flex;
+  position: relative;
+  text-decoration: none;
+  cursor: pointer;
+  min-width: fit-content; /* Verhindert zu schmale Buttons */
+  max-width: 100%; /* Verhindert Overflow */
+  white-space: nowrap; /* Verhindert Textumbruch */
+}
+
+.hero-button-primary {
+  color: #131313 !important; /* Schwarzer Text wie XCoin_Basti */
+}
+
+.hero-button-secondary {
+  color: #efeeec !important; /* Weißer Text wie XCoin_Basti */
+}
+
+.button-inner-row {
+  grid-column-gap: clamp(0.3em, 0.5vw, 0.5em);
+  grid-row-gap: clamp(0.3em, 0.5vw, 0.5em);
+  justify-content: center; /* Zentriert den Inhalt */
+  align-items: center;
+  display: flex;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+/* Größere Schrift und Icons für Hero-Buttons - Responsive */
+.hero-button .p-reg {
+  font-size: clamp(0.9em, 1.2vw, 1.2em); /* Responsive Schriftgröße */
+}
+
+.hero-button svg {
+  width: clamp(1.2em, 1.5vw, 1.5em); /* Responsive Icon-Größe */
+  height: clamp(1.2em, 1.5vw, 1.5em);
+}
+
+/* Responsive Anpassungen für verschiedene Bildschirmbreiten */
+@media (max-width: 1024px) {
+  .hero-button {
+    height: clamp(3.2em, 4vw, 4em);
+    padding-left: clamp(1.2em, 2.5vw, 2em);
+    padding-right: clamp(1.2em, 2.5vw, 2em);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-button {
+    height: clamp(3em, 3.5vw, 3.5em);
+    padding-left: clamp(1em, 2vw, 1.5em);
+    padding-right: clamp(1em, 2vw, 1.5em);
+  }
+  
+  .hero-button .p-reg {
+    font-size: clamp(0.9em, 1.1vw, 1.1em); /* Kleinere Schrift auf Mobile */
+  }
+  
+  .hero-button svg {
+    width: clamp(1.2em, 1.3vw, 1.4em);
+    height: clamp(1.2em, 1.3vw, 1.4em);
+  }
+}
+
+/* Für sehr breite Bildschirme: Max-width setzen */
+@media (min-width: 1920px) {
+  .hero-button {
+    max-width: 20em; /* Verhindert zu breite Buttons auf großen Bildschirmen */
+  }
+}
+
+.button-bg {
+  z-index: -1;
+  background-color: #93c5fd; /* Standard Blau-Farbe */
+  border-radius: 0.25em;
+  position: absolute;
+  inset: 0%;
+  transition: transform 0.3s ease, background-color 0.2s ease-in-out;
+}
+
+/* Spezifische Regel für den primären Hero-Button */
+.hero-button-primary .button-bg {
+  background-color: #93c5fd; /* Standard Blau-Farbe */
+}
+
+.hero-button:hover .button-bg {
+  transform: scale(0.95);
+}
+
+.hero-button-icon {
+  width: clamp(1.25rem, 1.5vw, 1.625rem);
+  height: clamp(1.25rem, 1.5vw, 1.625rem);
+}
+
+.hero-description {
+  color: white;
+  text-align: left;
+  line-height: 1.6;
+  margin-top: clamp(2rem, 3vh, 3rem); /* Erhöht von 1.25rem-2rem auf 2rem-3rem */
+  max-width: clamp(24rem, 45vw, 42rem); /* Erhöht von 18rem-28rem auf 24rem-42rem für breitere Darstellung */
+  font-size: clamp(0.95rem, 1.2vw, 1.4rem);
+}
+
+/* ============================================
+   HEADER - OPTIMIZED
+   ============================================ */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: transparent;
+  transition: all 0.4s ease;
+}
+
+.header-nav {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  transition: padding 0.4s ease;
+}
+
+.header--scrolled .header-nav {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.4s ease;
+  padding-left: 1.5rem;
+}
+
+.header--scrolled .header-logo {
+  padding-left: 0.5rem;
+  transform: translateX(-0.5rem) translateY(-0.25rem);
+}
+
+.header-logo-icon {
+  position: relative;
+}
+
+/* Responsive Logo Icon */
+@media (max-width: 1440px) {
+  .header-logo-icon {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .header-logo-image {
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
+
+@media (max-width: 1280px) {
+  .header-logo-icon {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .header-logo-image {
+    width: 32px !important;
+    height: 32px !important;
+  }
+}
+
+/* Mobile: Größeres Logo */
+@media (max-width: 767px) {
+  .header-logo-icon {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .header-logo-image {
+    width: 48px !important;
+    height: 48px !important;
+  }
+  
+  .header-logo-text {
+    font-size: 2rem;
+  }
+}
+
+.header-logo-image {
+  animation: spin-slow 10s linear infinite;
+  /* Filter entfernt - SVG hat bereits die blaue Farbe (#93c5fd) eingebaut */
+}
+
+.header-logo-glow {
+  position: absolute;
+  inset: 0;
+  background: #93c5fd;
+  border-radius: 0.5rem;
+  filter: blur(1rem);
+  opacity: 0.7;
+  z-index: -1;
+}
+
+.header-logo-text {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: white;
+}
+
+/* Responsive Logo Text */
+@media (max-width: 1440px) {
+  .header-logo-text {
+    font-size: 1.65rem;
+  }
+}
+
+@media (max-width: 1280px) {
+  .header-logo-text {
+    font-size: 1.5rem;
+  }
+}
+
+.header-nav-desktop {
+  display: none;
+  align-items: center;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .header-nav-desktop {
+    display: flex;
+  }
+}
+
+.header-nav-link {
+  position: relative;
+  font-size: 1.3em;
+  font-weight: 500;
+  color: white;
+  transition: color 0.3s;
+  padding: 0.5rem 0;
+  font-family: var(--font-sans);
+}
+
+/* Responsive Navigation - kleiner auf mittleren Bildschirmen */
+@media (max-width: 1440px) {
+  .header-nav-link {
+    font-size: 1.15em;
+  }
+  
+  .header-nav-desktop {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 1280px) {
+  .header-nav-link {
+    font-size: 1.05em;
+  }
+  
+  .header-nav-desktop {
+    gap: 1.25rem;
+  }
+}
+
+.header-nav-link-underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: white;
+  transition: width 0.3s;
+}
+
+.header-nav-link:hover .header-nav-link-underline {
+  width: 100%;
+}
+
+.header-actions {
+  display: none;
+  align-items: center;
+  gap: 1rem;
+  padding-right: 1.5rem;
+  transition: padding 0.4s ease;
+}
+
+.header--scrolled .header-actions {
+  padding-right: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  .header-actions {
+    display: flex;
+  }
+}
+
+.header-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.375rem;
+  padding: 0.625rem 1.25rem;
+  font-size: 1.3em;
+  font-weight: 400;
+  color: black;
+  transition: all 0.4s;
+  overflow: hidden;
+  font-family: var(--font-sans);
+}
+
+.header-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #93c5fd;
+  border-radius: 0.375rem;
+  z-index: -1;
+  transition: transform 0.3s;
+}
+
+.header-button:hover::before {
+  transform: scale(0.95);
+}
+
+.header-button-icon {
+  border-radius: 9999px;
+  border: 1px solid black;
+  padding: 0.25rem;
+}
+
+.header-button-icon-image {
+  filter: brightness(0);
+  transition: transform 0.3s;
+}
+
+.header-button:hover .header-button-icon-image {
+  animation: spin-slow 10s linear infinite;
+}
+
+/* Responsive Header Actions (Crowdfunding & Buy Token) */
+@media (max-width: 1440px) {
+  .header-actions .p-reg,
+  .header-actions a.p-reg {
+    font-size: 1.15em !important;
+  }
+  
+  .header-button {
+    font-size: 1.15em;
+    padding: 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 1280px) {
+  .header-actions .p-reg,
+  .header-actions a.p-reg {
+    font-size: 1.05em !important;
+  }
+  
+  .header-button {
+    font-size: 1.05em;
+    padding: 0.45rem 0.9rem;
+  }
+}
+
+.header-mobile-toggle {
+  display: block;
+  padding-right: 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  .header-mobile-toggle {
+    display: none;
+  }
+}
+
+/* Menu Button - XCoin_Basti Style */
+.menu-button {
+  color: white;
+  background-color: #93c5fd;
+  border-radius: 0.25rem;
+  justify-content: center;
+  align-items: center;
+  width: 2.5em;
+  height: 2.5em;
+  padding: 0.625em;
+  display: flex;
+  position: relative;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  z-index: 10;
+}
+
+.menu-button__icon {
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.65s cubic-bezier(0.65, 0.05, 0, 1);
+  position: relative;
+}
+
+.menu-button .button-bg {
+  position: absolute;
+  inset: 0;
+  background: #93c5fd;
+  border-radius: 0.25rem;
+  z-index: 0;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.menu-button:hover .button-bg {
+  transform: scale(0.95);
+}
+
+.menu-button.close .button-bg {
+  background: #131313;
+}
+
+.menu-button.close .menu-button__icon {
+  transform: rotate(135deg);
+}
+
+.menu-button.close {
+  color: #efeeec;
+}
+
+@media (min-width: 1024px) {
+  .menu-button {
+    display: none;
+  }
+}
+
+/* Menu Background Overlay */
+.menu-bg {
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.65s cubic-bezier(0.65, 0.05, 0, 1);
+  pointer-events: none;
+}
+
+.menu-bg.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (min-width: 1024px) {
+  .menu-bg {
+    display: none;
+  }
+}
+
+/* Mobile Menu - XCoin_Basti Style */
+.nav-menu {
+  z-index: 3;
+  color: #131313;
+  background-color: #efeeec;
+  border-radius: 0.25em;
+  width: calc(100vw - 1em);
+  max-height: calc(100dvh - 1em);
+  padding: 8em 2em 2em;
+  display: block;
+  position: fixed;
+  top: -0.75em;
+  left: 50%;
+  right: 0;
+  transform: translateX(-50%) translateY(-120%);
+  overflow-y: auto;
+  opacity: 0;
+  transition: transform 0.65s cubic-bezier(0.65, 0.05, 0, 1), opacity 0.65s cubic-bezier(0.65, 0.05, 0, 1);
+  pointer-events: none;
+}
+
+.nav-menu.open {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (min-width: 1024px) {
+  .nav-menu {
+    display: none !important;
+  }
+}
+
+.nav-menu-eyebrow {
+  display: block;
+  position: absolute;
+  top: 1.6em;
+  left: 2em;
+}
+
+.nav-menu__links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-items: stretch;
+}
+
+.link.nav-link {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.25em;
+  padding-bottom: 1.25em;
+  text-decoration: none;
+  color: #131313;
+  opacity: 0;
+  transform: translateY(50%);
+  transition: opacity 0.65s cubic-bezier(0.65, 0.05, 0, 1), transform 0.65s cubic-bezier(0.65, 0.05, 0, 1);
+}
+
+.nav-menu.open .link.nav-link {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nav-menu.open .link.nav-link:nth-child(1) { transition-delay: 0.25s; }
+.nav-menu.open .link.nav-link:nth-child(2) { transition-delay: 0.3s; }
+.nav-menu.open .link.nav-link:nth-child(3) { transition-delay: 0.35s; }
+.nav-menu.open .link.nav-link:nth-child(4) { transition-delay: 0.4s; }
+.nav-menu.open .link.nav-link:nth-child(5) { transition-delay: 0.45s; }
+.nav-menu.open .link.nav-link:nth-child(6) { transition-delay: 0.5s; }
+
+.nav-link-text {
+  font-size: 1.5em;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  color: #131313;
+}
+
+.nav-link-arrow {
+  width: 0.75em;
+  height: 1em;
+  display: flex;
+  color: #131313;
+}
+
+.nav-menu-divider {
+  opacity: 0.25;
+  background-image: linear-gradient(
+    90deg,
+    rgba(19, 19, 19, 0),
+    #131313 25% 75%,
+    rgba(19, 19, 19, 0)
+  );
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+}
+
+.nav-menu-divider.bottom {
+  top: auto;
+  bottom: 0;
+}
+
+.nav-menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+  margin-top: 2em;
+  opacity: 0;
+  transform: translateY(50%);
+  transition: opacity 0.65s cubic-bezier(0.65, 0.05, 0, 1), transform 0.65s cubic-bezier(0.65, 0.05, 0, 1);
+}
+
+.nav-menu.open .nav-menu-buttons {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.55s;
+}
+
+.button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75em 1.5em;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  overflow: hidden;
+  font-family: var(--font-sans);
+}
+
+.button-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 0.25em;
+  transition: transform 0.3s ease, background-color 0.2s ease-in-out;
+  background-color: var(--background);
+}
+
+/* Dashboard Section - Optimized */
+.db-nav__item:hover {
+  background-color: #1f1f1f !important;
+}
+
+.db-nav__item:hover .db-nav__icon {
+  color: #93c5fd !important;
+}
+
+.db-nav__item:hover p {
+  color: #93c5fd !important;
+}
+
+.db-content__card {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  position: relative !important;
+  overflow: visible; /* Erlaubt Text-Sichtbarkeit */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Link innerhalb der Karte sollte auch flex sein */
+.db-content__card a {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+}
+
+.db-content__card img {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transform-style: preserve-3d !important;
+}
+
+/* Only apply transparent background to specific dashboard cards, not all db-card__visual */
+.db-content__card .db-card__visual,
+.db-content__card .dash-res-card__visual-before {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Consolidated transparent background rules */
+.db-content__card[data-category="learning"] *::before,
+.db-content__card[data-category="learning"] *::after {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+.db-content__card[data-category="learning"],
+.db-content__card[data-category="learning"] * {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+.db-content__card[data-category="whitepapers"] {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.db-content__card:hover {
+  transform: scale(1.02) !important; /* Sehr kleiner Effekt - verhindert Overflow */
+  z-index: 10 !important;
+}
+
+.db-content__card:hover img {
+  transform: rotateY(180deg) scaleX(-1) !important;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.dashboard-banner {
+  box-shadow: 0 0 30px rgba(147, 197, 253, 0.6), 0 0 60px rgba(147, 197, 253, 0.4), 0 0 90px rgba(147, 197, 253, 0.2);
+  width: 100%; /* Nutzt die volle Breite des .db-search Containers */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Features Grid Section - XCoin_Basti Style */
+.f-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 2em; /* Increased from 1.8em to 2em (about 11% larger) */
+  width: 100%;
+  max-width: 100%; /* Use almost full width of the page */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.f-grid-card {
+  display: flex;
+  flex-flow: column;
+  grid-column: span 2;
+  height: 33.145em; /* 30.132em * 1.1 = 33.145em (10% increase) */
+  padding: 2.772em 2.079em 2.079em; /* 2.52em * 1.1 = 2.772em, 1.89em * 1.1 = 2.079em (10% increase) */
+  border-radius: 1rem;
+  background-color: rgba(239, 238, 236, 0.06); /* #efeeec0f */
+  border: 1px solid rgba(239, 238, 236, 0.08); /* #efeeec14 */
+  overflow: hidden;
+  position: relative;
+  z-index: 1; /* Klare z-index Hierarchie */
+  transition: border-color 0.3s;
+}
+
+.f-grid-card:hover {
+  border-color: rgba(147, 197, 253, 0.5); /* accent color with opacity */
+}
+
+.f-grid-card.basics {
+  grid-column: span 1;
+  justify-content: space-between;
+  align-items: stretch;
+  overflow: hidden; /* Prevent content from overflowing the box */
+}
+
+.f-grid-card.video {
+  grid-column: span 2;
+  padding-bottom: 0;
+  gap: 2.52em; /* 2.1em * 1.2 = 2.52em (20% increase) */
+}
+
+.f-grid-card.components {
+  grid-column: span 2;
+  padding-bottom: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Development Background - Desktop (Standard) */
+.f-grid-card.components .development-bg-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.25; /* Reduziert von 0.35 auf 0.25 für dunkleren Hintergrund */
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+  border-radius: 1rem;
+}
+
+.f-grid-card.components .development-images-container {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  width: 100%;
+  height: 100%;
+  padding: 0.25em;
+}
+
+.f-grid-card.components .development-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  flex: 1;
+  width: 100%;
+  height: auto;
+}
+
+.f-grid-card.components .development-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 0.5em;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.f-grid-card.components .development-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Text über Background */
+.f-grid-card.components .f-card__text {
+  position: relative;
+  z-index: 1;
+}
+
+.f-grid-card.icons {
+  grid-column: span 1;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+/* 3D Effect for Quantum-Resistant Icons - XCoin_Basti Style */
+.f-grid__icons {
+  grid-column-gap: 1em;
+  grid-row-gap: 1em;
+  perspective: 1000px;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: -2em; /* Moved up from -1.5em to -2em */
+  display: flex;
+  position: relative;
+  z-index: 1; /* Klare z-index Hierarchie */
+}
+
+.f-grid__icons-row {
+  grid-column-gap: 0.9em; /* Increased from 0.75em to 0.9em (20% larger) */
+  grid-row-gap: 0.9em; /* Increased from 0.75em to 0.9em (20% larger) */
+  transform-style: preserve-3d;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  transform: rotateX(30deg) rotateY(-10deg) rotateZ(20deg);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+/* 3D-Effekt auch auf Mobile aktivieren - mit stärkeren Regeln */
+@media screen and (max-width: 768px) {
+  .f-grid__icons {
+    perspective: 1000px !important; /* 3D-Effekt aktivieren */
+    margin-top: -1em !important; /* Angepasst für Mobile */
+  }
+  
+  .f-grid__icons-row {
+    flex-flow: row !important; /* Horizontal bleiben auf Mobile */
+    transform: rotateX(15deg) rotateY(-5deg) rotateZ(10deg) !important; /* Reduzierte 3D-Rotation für Mobile */
+    gap: 0.4em !important; /* Kompaktere Abstände */
+    flex-wrap: wrap !important; /* Erlaube Wrapping wenn nötig */
+    justify-content: center !important;
+    display: flex !important;
+  }
+  
+  .f-grid__icons-col {
+    flex-direction: row !important; /* Horizontal bleiben */
+    gap: 0.4em !important; /* Kompaktere Abstände */
+    display: flex !important;
+  }
+  
+  /* Icon-Größen auf Mobile reduzieren */
+  .f-grid__icon {
+    width: 4em !important; /* Noch kleiner für Mobile */
+    height: 4em !important;
+    flex-shrink: 0 !important;
+  }
+  
+  .dash-icon-card {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  .dash-icon-card__svg {
+    width: 1.2em !important; /* Noch kleiner */
+    height: 1.2em !important;
+  }
+  
+  .f-grid-icon__info {
+    font-size: 0.7em !important; /* Kleinere Schrift */
+  }
+  
+  .f-grid__icon,
+  .f-grid__icons-col,
+  .dash-icon-card {
+    transform-style: preserve-3d !important; /* 3D-Effekt aktivieren */
+  }
+}
+
+.f-grid__icons-col {
+  grid-column-gap: 0.9em; /* Increased from 0.75em to 0.9em (20% larger) */
+  grid-row-gap: 0.9em; /* Increased from 0.75em to 0.9em (20% larger) */
+  transform-style: preserve-3d;
+  display: flex;
+}
+
+.f-grid__icon {
+  color: var(--foreground);
+  transform-style: preserve-3d;
+  border-radius: 0.25em;
+  flex: none;
+  width: 7.5em; /* Increased from 6em to 7.5em (25% larger) */
+  height: 7.5em; /* Increased from 6em to 7.5em (25% larger) */
+  position: relative;
+}
+
+.dash-icon-card {
+  background-color: var(--background);
+  transform-style: preserve-3d;
+  border-radius: 0.5em;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.325s cubic-bezier(0.65, 0.05, 0, 1);
+  will-change: transform, background-color; /* Performance-Optimierung für Hover */
+}
+
+.dash-icon-card.is--home-features {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #1a1a1a;
+  color: #efeeec;
+}
+
+.dash-icon-card__before {
+  padding-top: 100%;
+}
+
+.dash-icon-card__svg {
+  color: rgba(255, 255, 255, 0.5);
+  justify-content: center;
+  align-items: center;
+  width: 2em; /* Increased from 1.5em to 2em (33% larger) */
+  height: 2em; /* Increased from 1.5em to 2em (33% larger) */
+  margin-bottom: 0.5em;
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: color 0.325s cubic-bezier(0.65, 0.05, 0, 1), margin-bottom 0.325s cubic-bezier(0.65, 0.05, 0, 1);
+}
+
+.dash-icon-card__svg img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.f-grid-icon__info {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-top: 0.25em;
+  padding-bottom: 0.75em;
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transition: all 0.325s cubic-bezier(0.65, 0.05, 0, 1) 0.075s;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0em) rotate(0.001deg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dash-icon-card:hover {
+    background-color: rgba(255, 255, 255, 0.75);
+  }
+
+  .dash-icon-card:hover .dash-icon-card__svg {
+    color: #efeeec;
+    margin-bottom: 1em;
+  }
+
+  .dash-icon-card:hover .f-grid-icon__info {
+    transition: all 0.325s cubic-bezier(0.65, 0.05, 0, 1) 0s;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-0.5em) rotate(0.001deg);
+  }
+}
+
+.f-grid-card.snippets {
+  grid-column: span 2;
+}
+
+/* Entferne den Abstand zwischen Text und Bild im Use Cases Feld */
+.f-grid-card.snippets .f-card__text {
+  gap: 0.4em; /* Reduziert von 0.75em auf 0.4em für weniger Abstand */
+  margin-bottom: 0; /* Kein Abstand nach unten */
+}
+
+.f-grid__snippet {
+  max-height: 16.8em; /* Increased from 14.4em to 16.8em (about 17% larger) */
+  flex: 0 0 auto;
+  margin-top: auto;
+  overflow: hidden;
+}
+
+.f-grid__snippet img {
+  width: 100%;
+  height: auto;
+  max-height: 16.8em; /* Increased from 14.4em to 16.8em (about 17% larger) */
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.f-grid-card.full {
+  grid-column: span 4;
+}
+
+.f-grid-card.full.end {
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  min-height: auto;
+  padding-top: 2.52em; /* 2.1em * 1.2 = 2.52em (20% increase) */
+  padding-bottom: 2.52em; /* 2.1em * 1.2 = 2.52em (20% increase) */
+}
+
+.f-card__text {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: relative;
+  z-index: 2; /* Über dem Card-Hintergrund */
+  gap: 0.75em;
+  overflow: hidden; /* Prevent text from overflowing */
+}
+
+.f-card__paragraph {
+  width: 100%;
+  max-width: 30em;
+  overflow-wrap: break-word; /* Break long words if needed */
+  word-wrap: break-word; /* Legacy support */
+}
+
+.f-grid-card.basics .f-card__paragraph p {
+  font-size: 0.9em; /* 0.75em * 1.2 = 0.9em (20% increase) */
+  line-height: 1.4;
+}
+
+/* Increase font sizes for all text in f-grid-card fields (20% increase) */
+.f-grid-card .h-small {
+  font-size: 2.1em !important; /* 1.75em * 1.2 = 2.1em (20% increase) */
+}
+
+.f-grid-card .p-small {
+  font-size: 1.2em !important; /* 1.05em * 1.143 = 1.2em (additional increase) */
+}
+
+.f-grid-card .f-card__paragraph .p-small {
+  font-size: 1.2em !important; /* 1.05em * 1.143 = 1.2em (additional increase) */
+}
+
+/* Responsive adjustments - Simplified */
+@media (max-width: 1024px) {
+  .f-grid {
+    grid-template-columns: 1fr; /* Alles untereinander auf Tablet */
+    grid-gap: 1.8em; /* Increased spacing */
+  }
+  
+  .f-grid-card {
+    grid-column: span 1;
+    height: auto;
+    min-height: auto;
+    padding: 2.52em 1.89em 1.89em; /* 2.1em * 1.2 = 2.52em, 1.575em * 1.2 = 1.89em (20% increase) */
+  }
+  
+  .f-grid-card.video,
+  .f-grid-card.components,
+  .f-grid-card.snippets,
+  .f-grid-card.basics,
+  .f-grid-card.icons {
+    grid-column: span 1; /* Alles untereinander */
+  }
+  
+  .f-grid-card.full {
+    grid-column: span 1;
+  }
+  
+  /* Prevent image stretching on tablet */
+  .f-grid__snippet {
+    max-height: 12em; /* 10em * 1.2 = 12em (20% increase) */
+  }
+  
+  .f-grid__snippet img {
+    max-height: 12em; /* 10em * 1.2 = 12em (20% increase) */
+  }
+  
+  /* Responsive font sizes for tablet */
+  .f-grid-card .h-small {
+    font-size: 1.9em !important; /* Slightly smaller on tablet */
+  }
+  
+  .f-grid-card .p-small {
+    font-size: 1.1em !important; /* Increased for tablet */
+  }
+}
+
+@media (max-width: 768px) {
+  .f-grid {
+    grid-template-columns: 1fr;
+    grid-gap: 1rem !important; /* Kleinerer Gap auf Mobile */
+  }
+  
+  .f-grid-card {
+    grid-column: span 1;
+    height: auto;
+    min-height: auto;
+    padding: 1.5rem 1rem !important; /* Weniger Padding auf Mobile */
+  }
+
+  .f-grid-card .h-small {
+    font-size: 1.5rem !important; /* Kleinere Überschriften */
+  }
+
+  .f-grid-card .p-small {
+    font-size: 0.875rem !important; /* Kleinere Texte */
+  }
+  
+  .f-grid-card.video,
+  .f-grid-card.components,
+  .f-grid-card.snippets,
+  .f-grid-card.full {
+    grid-column: span 1;
+  }
+  
+  /* Prevent image stretching on mobile */
+  .f-grid__snippet {
+    max-height: 9.6em; /* 8em * 1.2 = 9.6em (20% increase) */
+    flex: 0 0 auto;
+  }
+  
+  .f-grid__snippet img {
+    max-height: 9.6em; /* 8em * 1.2 = 9.6em (20% increase) */
+    height: auto;
+  }
+  
+  /* Icon-Größen auf Mobile reduzieren */
+  .f-grid__icon {
+    width: 5em; /* Reduziert von 7.5em für bessere Mobile-Performance */
+    height: 5em; /* Reduziert von 7.5em für bessere Mobile-Performance */
+  }
+  
+  .dash-icon-card__svg {
+    width: 1.5em; /* Reduziert von 2em */
+    height: 1.5em; /* Reduziert von 2em */
+  }
+  
+  .f-grid__icons-row {
+    gap: 0.5em; /* Reduziert von 0.9em für kompaktere Darstellung */
+  }
+  
+  .f-grid__icons-col {
+    gap: 0.5em; /* Reduziert von 0.9em */
+  }
+  
+  .f-grid__icons {
+    margin-top: -1em; /* Angepasst für Mobile */
+  }
+  
+  /* Use Cases Feld: Etwas Abstand auf Mobile */
+  .f-grid-card.snippets .f-card__text {
+    margin-bottom: 0.5em; /* Etwas Abstand auf Mobile */
+  }
+  
+  /* Responsive font sizes for mobile */
+  .f-grid-card .h-small {
+    font-size: 1.75em !important; /* Original size on mobile */
+  }
+  
+  .f-grid-card .p-small {
+    font-size: 1em !important; /* Increased for mobile */
+  }
+  
+  /* Prevent stretching of video wrap on mobile */
+  .f-grid__vid-wrap {
+    flex: 0 1 auto;
+    max-height: 10em;
+  }
+  
+  .vimeo-wrap {
+    max-height: 10em;
+    min-height: 150px;
+    height: auto;
+  }
+  
+  /* Prevent stretching of card content */
+  .f-card__text {
+    flex: 0 1 auto;
+  }
+  
+  /* Development Background - Mobile: Grid Layout mit 3 Spalten */
+  .f-grid-card.components .development-bg-container {
+    opacity: 0.3 !important; /* Reduziert von 0.6 auf 0.3 für dunkleren Hintergrund auf Mobile */
+  }
+  
+  .f-grid-card.components .development-images-container {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    flex-direction: unset !important;
+    gap: 0.5em;
+    min-height: 35em;
+    padding: 0.25em !important;
+  }
+  
+  .f-grid-card.components .development-column {
+    flex: unset !important;
+    width: 100%;
+  }
+  
+  .f-grid-card.components .development-image {
+    min-height: 7em;
+  }
+}
+
+/* Features Grid Basics Items */
+.f-grid__basics {
+  width: calc(100% + 3em);
+  margin-left: -1.5em;
+  padding-top: 0.5em; /* Prevent top border from being cut off */
+}
+
+.f-grid-basics__item {
+  padding: var(--gap-tiny);
+  border: 1px solid var(--card--border-color);
+  border-radius: var(--card--radius-small);
+  cursor: pointer;
+  background-color: #0e0e0e;
+  flex-flow: column;
+  flex: none;
+  width: 17.955em; /* 18.9em * 0.95 = 17.955em (5% smaller) */
+  margin-left: 0.9975em; /* 1.05em * 0.95 = 0.9975em (5% smaller) */
+  margin-right: 0.9975em; /* 1.05em * 0.95 = 0.9975em (5% smaller) */
+  font-size: 0.648375em; /* 0.6825em * 0.95 = 0.648375em (5% smaller) */
+  font-weight: 500;
+  transition: border-color 0.2s, background-color 0.2s;
+  display: flex;
+  position: relative;
+}
+
+.f-grid-basics__item:hover {
+  background-color: #141414;
+  border-color: rgba(239, 238, 236, 0.15);
+}
+
+/* Dashboard Section Styles - Keep original */
+/* Base db-card__visual - used by dashboard section */
+.db-card__visual {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--card--radius-small);
+  flex-shrink: 0;
+}
+
+/* Dashboard cards should use aspect-video, not fixed height */
+.db-content__card .db-card__visual {
+  aspect-ratio: 16 / 9;
+  transform-origin: center center;
+  transform: scale(0.95); /* Bilder 5% kleiner - mehr Außenabstand */
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0; /* Verhindert, dass das Bild schrumpft */
+}
+
+.dash-res-card__visual-before {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+}
+
+.dash-res-card__visual-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+/* Bilder beim Hover noch etwas kleiner - zoom out Effekt */
+.db-content__card:hover .db-card__visual {
+  transform: scale(0.93); /* Beim Hover noch etwas kleiner */
+}
+
+.db-card__info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.425em; /* 0.5em * 0.85 = 0.425em (15% kleiner) */
+  flex-shrink: 0; /* Verhindert, dass der Text schrumpft */
+  min-height: 2.5em; /* Mindesthöhe für Text-Bereich */
+}
+
+.db-card__info.tiny {
+  font-size: 0.5525em; /* 0.65em * 0.85 = 0.5525em (15% kleiner) */
+}
+
+.db-card__info-start {
+  flex: 1;
+}
+
+.db-card__info-end {
+  display: flex;
+  align-items: center;
+}
+
+.db-card__arrow {
+  position: relative;
+  width: 1.275em; /* 1.5em * 0.85 = 1.275em (15% kleiner) */
+  height: 1.275em; /* 1.5em * 0.85 = 1.275em (15% kleiner) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: clip-path 0.3s;
+}
+
+/* Only hide arrow for f-grid-basics items that use db-card__arrow (if any), not dashboard cards */
+/* Note: Community cards use community-card__arrow, so this only applies if db-card__arrow is used in f-grid-basics */
+.f-grid-basics__item .db-card__arrow {
+  clip-path: circle(0% at 50% 50%);
+}
+
+.f-grid-basics__item:hover .db-card__arrow {
+  clip-path: circle(50% at 50% 50%);
+}
+
+/* Dashboard cards should always show arrow */
+.db-content__card .db-card__arrow {
+  clip-path: none !important;
+}
+
+/* Dashboard-Karten: Pfeil zentriert im Kreis */
+.db-content__card .db-card__arrow-svg {
+  transform: translateX(0) rotate(0.001deg) !important; /* Zentriert statt -75% */
+}
+
+.db-card__arrow-back {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(147, 197, 253, 0.2);
+  border-radius: 50%;
+}
+
+.db-card__arrow-svg {
+  width: 100%;
+  height: 100%;
+  color: currentColor;
+  transition: transform 0.3s;
+  transform: translateX(-75%) rotate(0.001deg);
+}
+
+.f-grid-basics__item:hover .db-card__arrow-svg {
+  transform: translateX(0%) rotate(0.001deg);
+}
+
+/* Community Images Card Styles - Separate from Dashboard */
+.community-card__visual {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--card--radius-small);
+  flex-shrink: 0;
+}
+
+.community-card__visual-before {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+}
+
+.community-card__visual-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.community-card__info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5em; /* Reduced top spacing */
+  margin-bottom: 0.25em; /* Further reduced bottom spacing */
+  padding-top: 0.5em; /* Reduced top padding */
+  padding-bottom: 0.25em; /* Further reduced bottom padding */
+  padding-left: 1.5em; /* Increased left padding */
+  font-size: 0.875em; /* Same as p-small - matching XCoin_Basti */
+}
+
+.community-card__info-start {
+  flex: 1;
+}
+
+.community-card__info-end {
+  display: flex;
+  align-items: center;
+}
+
+.community-card__arrow {
+  position: relative;
+  width: 1.5em;
+  height: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: clip-path 0.3s;
+  clip-path: circle(0% at 50% 50%);
+}
+
+.f-grid-basics__item:hover .community-card__arrow {
+  clip-path: circle(50% at 50% 50%);
+}
+
+.community-card__arrow-back {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(147, 197, 253, 0.2);
+  border-radius: 50%;
+}
+
+.community-card__arrow-svg {
+  width: 100%;
+  height: 100%;
+  color: currentColor;
+  transition: transform 0.3s;
+  transform: translateX(-75%) rotate(0.001deg);
+}
+
+.f-grid-basics__item:hover .community-card__arrow-svg {
+  transform: translateX(0%) rotate(0.001deg);
+}
+
+/* Browser Window Styles for Vision Card */
+.f-grid__vid-wrap {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  max-height: 15em;
+  position: relative;
+  transform: translate(0, 1px);
+  margin-top: auto;
+}
+
+.system-overlay {
+  z-index: 5;
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.25em;
+  border: 1px solid var(--card--border-color);
+  background-color: #1b1b1b;
+  border-top-left-radius: 0.375em;
+  border-top-right-radius: 0.375em;
+  padding: 0.375em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  transform: translate(0, -85%);
+}
+
+.system-overlay__dot {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 2em;
+  width: 0.375em;
+  height: 0.375em;
+}
+
+.vimeo-wrap {
+  width: 100%;
+  height: 100%;
+  max-height: 15em;
+  min-height: 200px;
+  position: relative;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background-color: #000;
+  border: 1px solid var(--card--border-color);
+}
+
+/* Responsive adjustments for browser window */
+@media (max-width: 1024px) {
+  .f-grid__vid-wrap {
+    width: 100%;
+    max-height: 12em;
+  }
+  
+  .vimeo-wrap {
+    max-height: 12em;
+  }
+}
+
+@media (max-width: 768px) {
+  .f-grid__vid-wrap {
+    flex: 0 1 auto;
+    max-height: 10em;
+  }
+  
+  .vimeo-wrap {
+    height: auto;
+    max-height: 10em;
+    min-height: 150px;
+  }
+}
+
+/* Rock Wrap Background */
+.rock-wrap {
+  z-index: 0;
+  width: 100%;
+  height: 50em;
+  position: absolute;
+  top: 20%;
+  left: 0;
+  right: 0;
+  overflow: visible;
+}
+
+.rock-wrap-image-container {
+  width: 100%;
+  height: 50em;
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+  position: relative;
+  overflow: hidden; /* Verhindert, dass Overlay über Container hinausragt */
+}
+
+.rock-wrap-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.rock-wrap-overlay {
+  z-index: 2;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 1) 100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+/* Unicorn Studio bg-wrapper */
+.bg-wrapper {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.bg-wrapper canvas {
+  position: absolute;
+}
+
+/* Hide image only when 3D scene canvas is loaded and visible */
+.rock-wrap-image-container:has(.bg-wrapper canvas) .rock-wrap-image {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+/* Show image on mobile where 3D is disabled */
+@media (max-width: 768px) {
+  .bg-wrapper {
+    display: none !important;
+  }
+  
+  .rock-wrap-image-container:has(.bg-wrapper canvas) .rock-wrap-image {
+    opacity: 0.5;
+  }
+}
+
+/* DAO Button Styles - matching XCoin_Basti */
+.dao-button {
+  color: var(--foreground);
+  background-color: transparent;
+  border: 1px solid transparent;
+  justify-content: center;
+  align-items: center;
+  height: 3.125em;
+  padding: 1.8em 2.4em;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-radius: 0.25em;
+  width: 100%;
+}
+
+/* Text-Zentrierung für dao-button */
+.dao-button .p-reg {
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+
+.dao-button-bg {
+  z-index: -1;
+  background-color: #93c5fd;
+  border-radius: 0.25em;
+  position: absolute;
+  inset: 0;
+  transition: transform 0.3s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.dao-button:hover .dao-button-bg {
+  transform: scale(0.95);
+}
+
+/* Mobile: Text-Zentrierung für dao-button */
+@media (max-width: 767px) {
+  .dao-button {
+    padding: 0 !important; /* Padding entfernen für korrekte Zentrierung */
+    height: 3.5rem !important; /* Gleiche Höhe wie Filter-Buttons */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+  }
+  
+  .dao-button .p-reg {
+    font-size: 0.9375rem !important; /* Konsistent mit anderen Buttons */
+    line-height: 1 !important; /* Line-height auf 1 für perfekte Zentrierung */
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    display: inline !important; /* Inline statt block für Flexbox */
+    width: auto !important;
+    vertical-align: middle !important;
+  }
+}
+
+/* DAO Filter Bar and Buttons - matching XCoin_Basti */
+.dao-filter-bar {
+  padding: var(--gap-tiny, 0.5em);
+  border: 1px solid var(--card--border-color, rgba(255, 255, 255, 0.1));
+  border-radius: var(--card--radius-small, 0.5em);
+  background-color: rgba(239, 238, 236, 0.06);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  gap: 0.25em;
+  position: relative;
+  overflow: hidden;
+}
+
+.dao-filter-button {
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 0.25em;
+  padding: 1.8em 2.4em; /* Further increased */
+  transition: border-color 0.25s;
+  position: relative;
+  flex: 1;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* DAO Filter Bar Mobile - responsive */
+@media (max-width: 768px) {
+  /* DAO Tabs Section Container */
+  section:has(.h-large) ~ div .mx-auto.max-w-\[1920px\] {
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    margin-top: 2rem !important;
+  }
+
+  /* Grid Container */
+  section:has(.h-large) ~ div .grid {
+    gap: 1.5rem !important;
+  }
+
+  .dao-filter-bar {
+    padding: 0 !important; /* KEIN Padding - Buttons sollen die volle Höhe haben */
+    gap: 0.125rem !important;
+    overflow-x: visible !important; /* Kein Scroll, Buttons gleichmäßig verteilt */
+    overflow-y: hidden !important;
+    width: 100% !important;
+    margin-top: 0.5rem !important; /* Stark reduziert von 1rem */
+    margin-bottom: 1.5rem !important; /* Reduziert von mb-8 */
+    max-width: 100% !important;
+    display: flex !important;
+    border-radius: 0.5rem !important;
+    justify-content: stretch !important; /* Buttons gleichmäßig verteilen */
+    background-color: rgba(239, 238, 236, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .dao-filter-button {
+    height: 3.5rem !important; /* GENAU wie der Button unten */
+    padding: 0 !important; /* KEIN Padding */
+    flex: 1 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    white-space: nowrap !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: visible !important;
+    position: relative !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0.375rem !important;
+    text-align: center !important; /* Für Fallback */
+  }
+
+  .dao-filter-button .p-med {
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important; /* Standard Line-Height */
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important; /* Block für Flexbox-Child */
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .dao-tab-sliding-bg {
+    width: calc(33.333% - 0.2em) !important; /* Angepasst für kleineres Gap */
+    top: 0.25em !important;
+    left: 0.25em !important;
+    height: calc(100% - 0.5em) !important;
+    transition: transform 0.3s ease !important; /* Smooth Animation */
+  }
+
+  /* Container Padding reduzieren */
+  .dao-tab-container {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1.5rem !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .dao-tab-container-top {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    margin-bottom: 1rem !important; /* Reduziert von mb-8 */
+  }
+
+  /* Überschrift kleiner */
+  .dao-tab-container-top h3 {
+    font-size: 2.5rem !important;
+    line-height: 1.1 !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
+    margin-bottom: 0.25rem !important; /* Reduziert von mb-0.5 für kompakteren Abstand */
+  }
+
+  .dao-tab-container-top span {
+    font-size: 0.875rem !important;
+    line-height: 1.3 !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
+    margin-top: 0 !important; /* Entfernt -top-1.5 für näheren Abstand */
+    top: 0 !important;
+  }
+
+  /* DAO Tab Content Wrap - FIX für Mobile */
+  .dao-tab-content-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 8rem !important; /* Feste Mindesthöhe - verhindert Verschiebung */
+    height: auto !important; /* Erlaubt Wachstum wenn nötig */
+    position: relative !important;
+    margin-bottom: 1.5rem !important;
+    overflow: hidden !important;
+  }
+
+  /* DAO Tab Content Item - FIX für Mobile */
+  .dao-tab-content-item {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: none !important; /* Statt visibility: hidden - nimmt keinen Platz ein */
+    flex-direction: column !important;
+    gap: 1rem !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    min-height: 8rem !important; /* Gleiche Mindesthöhe wie Container */
+  }
+
+  .dao-tab-content-item.active {
+    display: flex !important; /* Zeige nur aktives Item */
+  }
+
+  /* Heading in Content */
+  .dao-tab-content-item h4 {
+    font-size: 1.5rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0.75rem !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
+  }
+
+  /* Text in Content - wichtig für Zeilenumbruch */
+  .dao-tab-content-item p {
+    font-size: 0.9375rem !important;
+    line-height: 1.6 !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+    hyphens: auto !important;
+    overflow: hidden !important;
+  }
+}
+
+/* Sehr kleine Screens - noch kompakter */
+@media (max-width: 480px) {
+  .dao-filter-bar {
+    padding: 0 !important; /* KEIN Padding */
+    gap: 0.1rem !important;
+    margin-top: 0.375rem !important;
+    margin-bottom: 1.25rem !important;
+    border-radius: 0.5rem !important;
+  }
+
+  .dao-filter-button {
+    height: 3.5rem !important; /* Gleiche Höhe wie Button unten */
+    padding: 0 !important; /* KEIN Padding */
+    min-height: 0 !important;
+    overflow: visible !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .dao-filter-button .p-med {
+    font-size: 0.8125rem !important;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .dao-tab-sliding-bg {
+    width: calc(33.333% - 0.15em) !important;
+    top: 0.2em !important;
+    left: 0.2em !important;
+    height: calc(100% - 0.4em) !important;
+  }
+
+  .dao-tab-container-top h3 {
+    font-size: 2rem !important;
+    line-height: 1.1 !important;
+    margin-bottom: 0.125rem !important; /* Noch kompakter */
+  }
+
+  .dao-tab-container-top span {
+    font-size: 0.75rem !important;
+    line-height: 1.2 !important; /* Reduziert von 1.3 */
+    margin-top: 0 !important;
+    top: 0 !important;
+  }
+
+  .dao-tab-content-item h4 {
+    font-size: 1.25rem !important;
+  }
+
+  .dao-tab-content-item p {
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important;
+  }
+
+  .h-large {
+    font-size: 2rem !important;
+    line-height: 1.15 !important;
+  }
+}
+
+/* Crowdfunding Section - Responsive Optimierungen */
+@media (max-width: 640px) {
+  /* Buttons Container - Kompakter auf Mobile */
+  section:has(.h-large) ~ div .flex.items-center {
+    gap: 0.75rem !important; /* Kompakterer Abstand zwischen Buttons */
+  }
+
+  /* Buttons - Gleich groß, größer, mit Außenabstand */
+  section:has(.h-large) ~ div .flex.items-center a {
+    width: calc(100% - 1rem) !important;
+    min-height: 3.5rem !important;
+    padding: 1rem 1.5rem !important;
+    margin-left: 0.5rem !important;
+    margin-right: 0.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Abstand über den Buttons - Reduziert */
+  section:has(.h-large) ~ div .relative {
+    margin-bottom: 1.5rem !important; /* Reduziert für kompakteren Look */
+  }
+
+  /* Abstand zum Video (DividerAnimation) - Normalisiert */
+  section:has(.h-large) ~ div .mt-8 {
+    margin-top: 2rem !important; /* Normaler Abstand zum Video */
+  }
+}
+
+/* Tablet und größer: Buttons größer */
+@media (min-width: 640px) {
+  section:has(.h-large) ~ div .flex.items-center a {
+    padding: 1.25rem 3rem !important; /* Größer auf Desktop */
+    font-size: 1.125rem !important; /* Größere Schrift */
+    min-height: 4rem !important; /* Größere Höhe */
+  }
+  
+  section:has(.h-large) ~ div .flex.items-center a svg {
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+  }
+}
+
+.dao-filter-button.active {
+  visibility: visible;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.dao-tab-sliding-bg {
+  z-index: 0;
+  background-color: rgba(239, 238, 236, 0.06);
+  pointer-events: none;
+  border: 1px solid rgba(239, 238, 236, 0.08);
+  border-radius: 0.25em;
+  position: absolute;
+  top: 0.5em;
+  left: 0.5em;
+  width: calc(33.333% - 0.333em);
+  height: calc(100% - 1em);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dao-tab-button-border-only {
+  z-index: 0;
+  background-color: transparent;
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.25em;
+  position: absolute;
+  inset: -1px;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* DAO Tab Container - Kompakt auf Mobile, Responsive */
+.dao-tab-container {
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  min-height: 100%;
+  padding-top: 0.5rem;
+  padding-bottom: 0.75rem;
+  padding-right: 0;
+  display: flex;
+  gap: 0.75rem;
+  position: relative;
+}
+
+@media (min-width: 640px) {
+  .dao-tab-container {
+    padding-top: 0.75rem;
+    padding-bottom: 1rem;
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .dao-tab-container {
+    padding-top: 1rem;
+    padding-bottom: 1.5rem;
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .dao-tab-container {
+    padding-top: 1.5em;
+    padding-bottom: 2em;
+    padding-right: 3em;
+    gap: 2em;
+  }
+}
+
+.dao-tab-container-top {
+  grid-column-gap: 0;
+  grid-row-gap: 0;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  display: flex;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.dao-tab-content-wrap {
+  width: 100%;
+  min-width: 0;
+  position: relative;
+  min-height: 6rem;
+}
+
+@media (min-width: 640px) {
+  .dao-tab-content-wrap {
+    min-height: 8rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .dao-tab-content-wrap {
+    min-height: 10rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .dao-tab-content-wrap {
+    min-width: 24em;
+    min-height: 10em;
+  }
+}
+
+.dao-tab-content-item {
+  z-index: 1;
+  grid-column-gap: 0.5rem;
+  grid-row-gap: 0.5rem;
+  visibility: hidden;
+  flex-flow: column;
+  display: flex;
+  position: absolute;
+  inset: auto 0% 0%;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .dao-tab-content-item {
+    grid-column-gap: 0.75rem;
+    grid-row-gap: 0.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .dao-tab-content-item {
+    grid-column-gap: 1em;
+    grid-row-gap: 0.75em;
+  }
+}
+
+.dao-tab-content-item.active {
+  visibility: visible;
+}
+
+.dao-tab-button-wrap {
+  width: 100%;
+  position: relative;
+  min-height: 3.125em; /* Höhe beibehalten */
+}
+
+/* Pricing Section Container - breiter */
+.pricing-section-container {
+  max-width: 85% !important;
+}
+
+/* Leicht grauer Hintergrund für Pricing-Karten und Bottom-Card */
+.pricing-card-gray {
+  background-color: rgba(239, 238, 236, 0.08) !important; /* Leicht grauer Hintergrund */
+}
+
+/* Pricing Cards - 15% größer und breiter */
+.pricing-cards-container {
+  gap: 1.38em; /* 1.2em * 1.15 = 1.38em (15% größer) */
+  max-width: 100%;
+}
+
+/* Karten breiter machen */
+@media (min-width: 1024px) {
+  .pricing-cards-container {
+    gap: 1.8em; /* Größerer Gap für breitere Karten */
+  }
+}
+
+.pricing-card-wrapper {
+  padding: 2.76em 2.76em !important; /* 2.4em * 1.15 = 2.76em (15% größer) */
+}
+
+@media (min-width: 1024px) {
+  .pricing-card-wrapper {
+    padding: 3.68em 3.68em !important; /* 3.2em * 1.15 = 3.68em (15% größer) */
+  }
+}
+
+/* Increase font sizes by 15% */
+.pricing-card-wrapper .h-price {
+  font-size: 3.45em !important; /* 3em * 1.15 = 3.45em */
+}
+
+.pricing-card-wrapper .h-small {
+  font-size: 2.0125em !important; /* 1.75em * 1.15 = 2.0125em */
+}
+
+.pricing-card-wrapper .p-reg {
+  font-size: 1.15em !important; /* 1em * 1.15 = 1.15em */
+}
+
+.pricing-card-wrapper .p-small {
+  font-size: 1.00625em !important; /* 0.875em * 1.15 = 1.00625em */
+}
+
+.pricing-card-wrapper .eyebrow {
+  font-size: 0.8625em !important; /* 0.75em * 1.15 = 0.8625em */
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .pricing-card-wrapper {
+    padding: 2.4em 2.4em !important; /* Etwas kleiner auf Tablet */
+  }
+  
+  .pricing-cards-container {
+    gap: 1.2em;
+  }
+  
+  .pricing-card-wrapper .h-price {
+    font-size: 3.2em !important;
+  }
+  
+  .pricing-card-wrapper .h-small {
+    font-size: 1.9em !important;
+  }
+  
+  .pricing-card-wrapper .p-reg {
+    font-size: 1.1em !important;
+  }
+  
+  .pricing-card-wrapper .p-small {
+    font-size: 0.98em !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Pricing Section - volle Breite auf Mobile */
+  .pricing-section-container {
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .pricing-card-wrapper {
+    padding: 1.5rem 1rem !important; /* Weniger Padding auf Mobile */
+    width: 100% !important; /* Volle Breite */
+  }
+  
+  .pricing-cards-container {
+    gap: 1rem !important;
+  }
+
+  /* Bottom Card auch volle Breite */
+  .pricing-card-gray {
+    padding: 1.5rem 1rem !important;
+  }
+  
+  .pricing-card-wrapper .h-price {
+    font-size: 2.8em !important;
+  }
+  
+  .pricing-card-wrapper .h-small {
+    font-size: 1.75em !important; /* Originalgröße */
+  }
+  
+  .pricing-card-wrapper .p-reg {
+    font-size: 1em !important; /* Originalgröße */
+  }
+  
+  .pricing-card-wrapper .p-small {
+    font-size: 0.875em !important; /* Originalgröße */
+  }
+}
+
+/* Pricing Header - größer */
+.pricing-header-title {
+  font-size: 4.5em !important; /* Etwas größer als 4.05em */
+}
+
+.pricing-header-text {
+  font-size: 1.2em !important; /* 1em * 1.2 = 1.2em (20% größer) */
+}
+
+/* Responsive adjustments for pricing header */
+@media (max-width: 1024px) {
+  .pricing-header-title {
+    font-size: 3.8em !important; /* Etwas größer */
+  }
+  
+  .pricing-header-text {
+    font-size: 1.1em !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .pricing-header-title {
+    font-size: 2rem !important; /* Konsistent mit .h-medium auf Mobile */
+    line-height: 1.2;
+  }
+  
+  .pricing-header-text {
+    font-size: 0.9375rem !important; /* Konsistent mit .p-reg auf Mobile */
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 480px) {
+  .pricing-header-title {
+    font-size: 1.75rem !important;
+  }
+  
+  .pricing-header-text {
+    font-size: 0.875rem !important;
+  }
+}
+
+/* Pricing Bottom Card Title - 10% kleiner */
+.pricing-bottom-title {
+  font-size: 2.88em !important; /* 3.2em * 0.9 = 2.88em */
+}
+
+@media (max-width: 1024px) {
+  .pricing-bottom-title {
+    font-size: 2.52em !important; /* 2.8em * 0.9 = 2.52em */
+  }
+}
+
+/* Pricing Bottom Card Text - 10% kleiner */
+.pricing-bottom-text {
+  font-size: 1.17em !important; /* 1.3em * 0.9 = 1.17em */
+  color: white !important;
+}
+
+@media (max-width: 1024px) {
+  .pricing-bottom-text {
+    font-size: 1.08em !important; /* 1.2em * 0.9 = 1.08em */
+  }
+}
+
+@media (max-width: 768px) {
+  .pricing-bottom-title {
+    font-size: 2rem !important; /* Konsistent mit .h-medium auf Mobile */
+    line-height: 1.2;
+  }
+  
+  .pricing-bottom-text {
+    font-size: 0.9375rem !important; /* Konsistent mit .p-reg auf Mobile */
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 480px) {
+  .pricing-bottom-title {
+    font-size: 1.75rem !important;
+  }
+  
+  .pricing-bottom-text {
+    font-size: 0.875rem !important;
+  }
+}
+
+/* Header Actions - größere Schrift */
+.header-actions .p-reg,
+.header-actions a.p-reg,
+header a.p-reg {
+  font-size: 1.3em !important;
+}
+
+/* Price Card Tag - XCoin_Basti Style */
+.price-card-tag {
+  z-index: 30;
+  display: flex;
+  gap: 0.6em; /* Etwas größerer Gap für bessere Abstände */
+  color: #efeeec;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 2.5em;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  perspective: 1000px; /* Für 3D-Effekt */
+}
+
+.price-card-tag__inner {
+  z-index: 1;
+  display: flex;
+  gap: 0.6em; /* Größerer Gap zwischen Text und Icon */
+  color: #efeeec;
+  background-color: #131313;
+  border-radius: 0.35em; /* Runderes Aussehen */
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.35em 0.7em; /* 30% größer: 0.25em -> 0.35em, 0.5em -> 0.7em */
+  position: relative;
+  border: none;
+  cursor: pointer;
+  transition: all 0.65s cubic-bezier(0.65, 0.05, 0, 1); /* Langsamere, smoothere Animation */
+  transform-style: preserve-3d;
+  min-height: 2em; /* Mindesthöhe für bessere Proportionen */
+}
+
+.price-card-tag__inner:hover {
+  background-color: #1a1a1a;
+}
+
+.price-overlay__close {
+  z-index: 0;
+  background-color: #131313;
+  border-radius: 0.35em; /* Runderes Aussehen, passt zum Button */
+  justify-content: center;
+  align-items: center;
+  width: 2em; /* 33% größer: 1.5em -> 2em */
+  height: 2em; /* 33% größer: 1.5em -> 2em */
+  padding: 0.5em; /* Etwas größeres Padding */
+  display: flex;
+  position: absolute;
+  top: 50%; /* Zentriert vertikal */
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.65s cubic-bezier(0.65, 0.05, 0, 1), opacity 0.65s cubic-bezier(0.65, 0.05, 0, 1); /* Separate Transitions für smooth Rückwärts-Animation */
+  transform: translate(0%, -50%) rotate(0deg); /* Startposition: versteckt, keine Rotation */
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  will-change: transform; /* Optimiert die Animation */
+}
+
+.price-overlay__close button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #efeeec;
+}
+
+.price-overlay__close .close-icon {
+  width: 100%;
+  height: 100%;
+  color: currentColor;
+  transition: transform 0.3s ease;
+}
+
+/* Show close button when overlay is active - Würfel-Rotation */
+.pricing-card-wrapper.show-overlay .price-overlay__close {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-110%, -50%) rotate(-90deg); /* Rollt nach links wie ein Würfel, näher am Button */
+}
+
+/* Rückwärts-Animation: Wenn Overlay geschlossen wird (egal ob durch Close-Button oder Tag-Button), rollt der Würfel zurück */
+.pricing-card-wrapper:not(.show-overlay) .price-overlay__close {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(0%, -50%) rotate(0deg); /* Rollt zurück in die Startposition */
+}
+
+/* Hover effect for close icon */
+.price-overlay__close:hover .close-icon {
+  transform: rotate(-135deg);
+}
+
+.price-card-tag {
+  transition: transform 0.65s cubic-bezier(0.65, 0.05, 0, 1); /* Langsamere Animation */
+}
+
+/* Die Transition für price-overlay__close ist bereits oben definiert und umfasst transform (translate + rotate) */
+
+/* When overlay is active, move tag */
+.pricing-card-wrapper.show-overlay .price-card-tag {
+  transform: translate(0.9em, 0px) translateX(-50%); /* Etwas mehr Abstand für größeren Close-Button */
+}
+
+/* Wenn Overlay geschlossen wird, Tag-Button zurück zur Mitte */
+.pricing-card-wrapper:not(.show-overlay) .price-card-tag {
+  transform: translateX(-50%); /* Zurück zur zentrierten Position */
+}
+
+/* Verbesserte Ausrichtung - verhindert Kollisionen */
+.price-card-tag__inner .eyebrow {
+  line-height: 1.2; /* Bessere Zeilenhöhe */
+  white-space: nowrap; /* Verhindert Zeilenumbruch */
+}
+
+/* Responsive Anpassungen für kleinere Screens */
+@media (max-width: 768px) {
+  .price-card-tag {
+    top: 1.5em; /* Etwas höher auf Mobile */
+  }
+  
+  .price-card-tag__inner {
+    padding: 0.3em 0.6em; /* Etwas kleiner auf Mobile */
+    font-size: 0.9em; /* Etwas kleinere Schrift */
+  }
+  
+  .price-overlay__close {
+    width: 1.75em;
+    height: 1.75em;
+  }
+}
+
+/* Hide Next.js Development Indicator (Compiling... message) */
+#__next-build-watcher,
+[data-nextjs-dialog],
+[data-nextjs-dialog-overlay],
+.nextjs-toast-errors-parent {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* ============================================
+   FIX FÜR VERSCHIEBUNGEN AUF MOBILE
+   ============================================ */
+
+@media (max-width: 768px) {
+  /* Verhindere horizontales Scrollen */
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Container max-width auf Mobile */
+  .mx-auto {
+    max-width: 100% !important;
+  }
+  
+  /* Grid-Gaps konsistent */
+  .grid {
+    gap: 1rem !important;
+  }
+  
+  /* Flex-Gaps konsistent */
+  .flex {
+    gap: 0.75rem !important;
+  }
+  
+  /* Margin/Padding konsistent */
+  .mb-16, .mt-16 {
+    margin-bottom: 2rem !important;
+    margin-top: 2rem !important;
+  }
+  
+  .mb-12, .mt-12 {
+    margin-bottom: 1.5rem !important;
+    margin-top: 1.5rem !important;
+  }
+  
+  .mb-8, .mt-8 {
+    margin-bottom: 1rem !important;
+    margin-top: 1rem !important;
+  }
+  
+  /* Section Padding */
+  section.py-24 {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+  
+  section.py-12 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+  
+  /* Verhindere Text-Overflow */
+  h1, h2, h3, h4, h5, h6, p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+/* Why Xcoin Matters Section - 33% größer */
+section:has(h2.h-medium) .h-medium {
+  font-size: 4.49em !important; /* 3.375em * 1.33 = 4.48875em */
+}
+
+section:has(h2.h-medium) .p-reg {
+  font-size: 1.33em !important; /* 1em * 1.33 = 1.33em */
+  line-height: 1.4;
+}
+
+@media screen and (max-width: 1024px) {
+  section:has(h2.h-medium) .h-medium {
+    font-size: 3.72em !important; /* 2.8em * 1.33 = 3.724em */
+  }
+  
+  section:has(h2.h-medium) .p-reg {
+    font-size: 1.25em !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  section:has(h2.h-medium) .h-medium {
+    font-size: 2.66rem !important; /* 2rem * 1.33 = 2.66rem - konsistent mit neuem System */
+    line-height: 1.2;
+  }
+  
+  section:has(h2.h-medium) .p-reg {
+    font-size: 1.25rem !important; /* Konsistent mit neuem System */
+    line-height: 1.6;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  section:has(h2.h-medium) .h-medium {
+    font-size: 2.33rem !important; /* 1.75rem * 1.33 = 2.33rem */
+    line-height: 1.25;
+  }
+  
+  section:has(h2.h-medium) .p-reg {
+    font-size: 1.125rem !important;
+  }
+}
+
+/* Dashboard Section - Basti Style Structure */
+.db-container {
+  perspective: 1000px;
+  width: 100%;
+  max-width: 80em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.db-wrapper {
+  perspective: 1000px;
+  width: 100%;
+  height: 52.5em;
+  position: relative;
+}
+
+.db-base {
+  border-radius: var(--card--radius-reg);
+  background-color: #000;
+  border: 1px solid #2c2c2c;
+  position: absolute;
+  inset: 0%;
+}
+
+.db-side {
+  position: absolute;
+  left: 0.5em; /* Kleiner Außenabstand links */
+  top: 0.5em; /* Kleiner Außenabstand oben */
+  width: calc(20em - 1em); /* Breite anpassen für Abstand */
+  height: calc(100% - 1em); /* Höhe anpassen für Abstand */
+  z-index: 2;
+  background-color: rgba(239, 238, 236, 0.08); /* Gräulicher Hintergrund */
+  border-radius: var(--card--radius-reg); /* Abgerundete Ecken */
+}
+
+.db-side__inner {
+  flex-flow: column;
+  justify-content: space-between;
+  display: flex;
+  height: 100%;
+  padding: var(--gap-large);
+}
+
+.db-side__top {
+  flex: 1;
+}
+
+.db-side__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.db-search {
+  position: absolute;
+  top: calc(var(--gap-large) * 0.5); /* Höher positioniert - nach oben geschoben */
+  right: var(--gap-large);
+  z-index: 4;
+  margin-bottom: var(--gap-large); /* Abstand nach unten */
+  /* Banner-Breite = eine Karten-Breite (Desktop: 3 Spalten) */
+  /* Berechnung: (100% - sidebar - right margin - 2*gap) / 3 */
+  width: calc((100% - calc(20em + 0.3em) - var(--gap-large) - 2em) / 3);
+  max-width: 100%;
+}
+
+.db-content {
+  z-index: 3;
+  grid-column-gap: 1em;
+  grid-row-gap: 1em;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  position: absolute;
+  left: calc(20em + 0.3em); /* Zusätzlicher Abstand von ~0.3em (~5mm) zur Sidebar */
+  right: var(--gap-large);
+  top: calc(var(--gap-large) * 2.5); /* Näher am Button - verringert Abstand zur ersten Bildreihe */
+  bottom: var(--gap-large);
+  display: grid;
+  overflow: hidden; /* WICHTIG: Verhindert, dass 4. Reihe sichtbar wird */
+  max-height: calc(100% - calc(var(--gap-large) * 2.5) - var(--gap-large)); /* Begrenzt Höhe auf 3 Reihen */
+}
+
+@media (max-width: 1024px) {
+  .db-wrapper {
+    height: 62em; /* Erhöht von 46.5em auf 62em für 4 Reihen (46.5em * 4/3 ≈ 62em) */
+  }
+
+  .db-content {
+    grid-template-columns: repeat(2, 1fr); /* 2 Spalten auf Tablet */
+    grid-template-rows: repeat(4, auto); /* auto statt 1fr - erlaubt Wachstum für Bild + Text */
+    left: calc(6.25em + 0.3em); /* Gleicher zusätzlicher Abstand */
+    right: 0.75em;
+    top: calc(var(--gap-large) * 2.75); /* Näher am Button - verringert Abstand */
+    bottom: var(--gap-large); /* Wichtig: bottom setzen für vollständige Höhe */
+    align-items: start; /* Startet oben, erlaubt unterschiedliche Höhen */
+  }
+
+  .db-search {
+    /* Tablet: Banner-Breite = eine Karten-Breite (2 Spalten) */
+    /* Berechnung: (100% - sidebar - right margin - 1*gap) / 2 */
+    width: calc((100% - calc(6.25em + 0.3em) - 0.75em - 1em) / 2);
+    right: 0.75em;
+    top: calc(var(--gap-large) * 0.5); /* Höher auf Tablet - nach oben geschoben */
+    margin-bottom: var(--gap-large); /* Abstand nach unten */
+  }
+
+  .db-side {
+    width: calc(6.25em - 1em);
+    left: 0.5em;
+    top: 0.5em;
+    height: calc(100% - 1em);
+  }
+
+  /* Navigation responsive auf Tablet */
+  .db-side__inner {
+    padding: 1em 0.5em; /* Kleineres Padding */
+  }
+
+  .db-side__top {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .db-side__nav {
+    gap: 0.5rem; /* Kleinerer Gap */
+  }
+
+  .db-nav__icon {
+    width: 2.5rem !important; /* Kleinere Icons */
+    height: 2.5rem !important;
+  }
+
+  .db-nav__icon img {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+  }
+
+  /* Text in Navigation verstecken auf Tablet */
+  .db-side__nav p {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .db-wrapper {
+    /* Dynamische Höhe: ~8em pro Karte (Bild + Text + Gap) statt 13em */
+    min-height: calc(9 * 8em + 4em); /* 9 Karten × 8em + Padding = ~76em */
+    height: auto; /* Erlaubt Wachstum wenn nötig */
+  }
+
+  .db-content {
+    grid-template-columns: repeat(1, 1fr); /* 1 Spalte auf Mobile */
+    grid-template-rows: repeat(9, auto); /* auto statt 1fr - erlaubt Wachstum für Bild + Text */
+    left: calc(4em + 0.3em); /* Gleicher zusätzlicher Abstand */
+    right: 0.75em;
+    top: calc(var(--gap-large) * 1.5); /* Näher am Button - verringert Abstand */
+    bottom: var(--gap-large); /* Wichtig: bottom setzen für vollständige Höhe */
+    align-items: start; /* Startet oben, erlaubt unterschiedliche Höhen */
+    /* Reduziere Gaps für kompakteres Layout */
+    grid-column-gap: 0.75em;
+    grid-row-gap: 0.75em;
+  }
+
+  .db-search {
+    /* Mobile: Banner-Breite = eine Karten-Breite (1 Spalte) */
+    /* Berechnung: 100% - sidebar - right margin */
+    width: calc(100% - calc(4em + 0.3em) - 0.75em);
+    right: 0.75em;
+    top: calc(var(--gap-large) * 0.5); /* Höher auf Mobile - nach oben geschoben */
+    margin-bottom: var(--gap-large); /* Abstand nach unten */
+  }
+
+  /* Mobile: Karten haben genug Platz für Bild + Text */
+  .db-content__card {
+    min-height: auto; /* Erlaubt natürliche Höhe */
+    height: auto; /* Passt sich an Inhalt an */
+  }
+
+  /* Mobile: Bild behält Aspect Ratio, aber kompakter */
+  .db-content__card .db-card__visual {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    /* Reduziere Bild-Größe leicht für kompakteres Layout */
+    transform: scale(0.98);
+  }
+
+  /* Mobile: Kompakterer Text-Bereich */
+  .db-card__info {
+    margin-top: 0.5em; /* Reduziert von 0.75em für kompakteres Layout */
+    min-height: 2.5em; /* Reduziert von 3em */
+  }
+
+  .db-side {
+    width: calc(4em - 1em);
+    left: 0.5em;
+    top: 0.5em;
+    height: calc(100% - 1em);
+  }
+
+  /* Navigation noch kompakter auf Mobile */
+  .db-side__inner {
+    padding: 0.75em 0.25em; /* Noch kleineres Padding */
+  }
+
+  .db-side__top {
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+  }
+
+  .db-side__nav {
+    gap: 0.5rem; /* Größerer Gap für bessere Touch-Targets */
+  }
+
+  /* Größere Touch-Targets für Mobile Navigation */
+  .db-nav__item {
+    min-height: 2.75rem !important; /* Mindestens 44px für Touch-Targets */
+    padding: 0.5rem !important; /* Mehr Padding für bessere Klickbarkeit */
+    justify-content: center !important; /* Icons zentrieren */
+  }
+
+  .db-nav__icon {
+    width: 2.5rem !important; /* Größere Icons für bessere Sichtbarkeit */
+    height: 2.5rem !important;
+    min-width: 2.5rem !important; /* Verhindert Schrumpfen */
+    min-height: 2.5rem !important;
+  }
+
+  .db-nav__icon img {
+    width: 1.75rem !important; /* Größere Logos */
+    height: 1.75rem !important;
+  }
+
+  /* Text definitiv versteckt auf Mobile */
+  .db-side__nav p {
+    display: none !important;
+  }
+
+  /* Besseres visuelles Feedback für aktive Buttons auf Mobile */
+  .db-nav__item[data-filter] {
+    transition: all 0.2s ease;
+  }
+
+  .db-nav__item:hover,
+  .db-nav__item:active {
+    transform: scale(1.05); /* Leichtes Scale-Feedback beim Klicken */
+  }
+}
+
+/* Sehr kleine Screens (< 480px) - Navigation noch optimierter */
+@media (max-width: 480px) {
+  .db-side {
+    width: calc(5em - 1em); /* Etwas breiter auf sehr kleinen Screens */
+  }
+
+  .db-content {
+    left: calc(5em + 0.3em); /* Angepasst an breitere Sidebar */
+  }
+
+  .db-search {
+    width: calc(100% - calc(5em + 0.3em) - 0.75em); /* Angepasst */
+  }
+
+  .db-nav__item {
+    min-height: 3rem !important; /* Noch größere Touch-Targets */
+    padding: 0.625rem !important;
+  }
+
+  .db-nav__icon {
+    width: 2.75rem !important; /* Noch größere Icons */
+    height: 2.75rem !important;
+    min-width: 2.75rem !important;
+    min-height: 2.75rem !important;
+  }
+
+  .db-nav__icon img {
+    width: 2rem !important; /* Größere Logos */
+    height: 2rem !important;
+  }
+}
+
+/* Section Styles */
+.section {
+  padding: 5rem 0;
+  /* Ensure section doesn't block scrolling of child elements */
+  overflow: visible;
+  position: relative;
+}
+
+/* Glare Card Effect for Develop Page */
+.glare-card {
+  transition: transform 0.25s ease;
+  transform-style: preserve-3d;
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.glare-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(600px circle at var(--g-x, 50%) var(--g-y, 50%), rgba(255, 255, 255, 0.15), transparent 60%);
+  opacity: var(--g-opacity, 0);
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Optional: Add hover effect for glare */
+.glare-card:hover::after {
+  opacity: 1;
+}
+
+/* PDF Animation Styles */
+@keyframes pdfEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-180deg);
+    filter: blur(20px) brightness(0);
+  }
+  25% {
+    opacity: 0.5;
+    transform: scale(0.7) rotate(-90deg);
+    filter: blur(10px) brightness(0.5);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1) rotate(0deg);
+    filter: blur(5px) brightness(0.8);
+  }
+  75% {
+    opacity: 0.9;
+    transform: scale(1.05) rotate(5deg);
+    filter: blur(2px) brightness(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: blur(0) brightness(1);
+  }
+}
+
+.pdf-animation {
+  animation: pdfEntrance 2.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  display: inline-block;
+}
+
+.pdf-animation:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+
+.pdf-animation img {
+  transition: all 0.3s ease;
+}
+
+.pdf-animation:hover img {
+  transform: scale(1.15);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fire Border Effect for Whitepaper Cards (Blue Theme) */
+@keyframes fireBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes fireGlow {
+  0%, 100% {
+    box-shadow: 
+      0 0 20px rgba(147, 197, 253, 0.6),
+      0 0 40px rgba(96, 165, 250, 0.4),
+      0 0 60px rgba(126, 238, 254, 0.3),
+      inset 0 0 20px rgba(147, 197, 253, 0.1);
+  }
+  25% {
+    box-shadow: 
+      0 0 25px rgba(96, 165, 250, 0.7),
+      0 0 50px rgba(147, 197, 253, 0.5),
+      0 0 75px rgba(126, 238, 254, 0.4),
+      inset 0 0 25px rgba(96, 165, 250, 0.15);
+  }
+  50% {
+    box-shadow: 
+      0 0 30px rgba(126, 238, 254, 0.8),
+      0 0 60px rgba(96, 165, 250, 0.6),
+      0 0 90px rgba(147, 197, 253, 0.4),
+      inset 0 0 30px rgba(126, 238, 254, 0.2);
+  }
+  75% {
+    box-shadow: 
+      0 0 25px rgba(147, 197, 253, 0.7),
+      0 0 50px rgba(126, 238, 254, 0.5),
+      0 0 75px rgba(96, 165, 250, 0.4),
+      inset 0 0 25px rgba(147, 197, 253, 0.15);
+  }
+}
+
+.glare-card.border-glow {
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 1.5rem;
+  animation: fireGlow 3s ease-in-out infinite;
+}
+
+.glare-card.border-glow::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    #93c5fd,
+    #60a5fa,
+    #7eeefe,
+    #3b82f6,
+    #93c5fd,
+    #60a5fa,
+    #7eeefe,
+    #3b82f6
+  );
+  background-size: 400% 400%;
+  animation: fireBorder 4s ease infinite;
+  z-index: -1;
+  opacity: 0.8;
+}
+
+.glare-card.border-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.05);
+  z-index: -1;
+}
+
+.glare-card.border-glow:hover {
+  animation: fireGlow 1.5s ease-in-out infinite;
+}
+
+.glare-card.border-glow:hover::before {
+  animation: fireBorder 2s ease infinite;
+  opacity: 1;
+}
+
+/* Dashboard Mobile Optimierungen - bereits in den db-* Styles abgedeckt */
+
+/* FAQ Answer Styles */
+.faq-answer {
+  color: rgb(163 163 163); /* neutral-400 */
+}
+
+.faq-answer p {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.faq-answer p:first-child {
+  margin-top: 0;
+}
+
+.faq-answer p:last-child {
+  margin-bottom: 0;
+}
+
+.faq-answer ul {
+  list-style-type: disc;
+  list-style-position: inside;
+  margin-left: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding-left: 0;
+}
+
+.faq-answer li {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  line-height: 1.6;
+}
+
+.faq-answer a {
+  color: rgb(96 165 250); /* blue-400 */
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.faq-answer a:hover {
+  color: rgb(147 197 253); /* blue-300 */
+}
+
+.faq-answer strong {
+  font-weight: 600;
+  color: rgb(229 229 229); /* neutral-200 */
+}
+
+.faq-answer em {
+  font-style: italic;
+}
+
+/* Support for Tailwind classes in FAQ answers (they won't work but these styles will) */
+.faq-answer ul.ml-4,
+.faq-answer ul[class*="ml-"] {
+  margin-left: 1rem;
+}
+
+.faq-answer ul.mt-2,
+.faq-answer ul[class*="mt-2"] {
+  margin-top: 0.5rem;
+}
+
+.faq-answer p.mt-2,
+.faq-answer p[class*="mt-2"] {
+  margin-top: 0.5rem;
+}
+
+.faq-answer p.mt-4,
+.faq-answer p[class*="mt-4"] {
+  margin-top: 1rem;
+}
+
