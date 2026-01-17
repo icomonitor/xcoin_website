@@ -1,12 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { logger } from "@/lib/logger"
-
-// TODO: Später mit Datenbank verbinden
-// - E-Mails in Datenbank speichern
-// - E-Mail-Benachrichtigung senden
-// - Validierung erweitern
-// - Rate Limiting hinzufügen
-// - Spam-Filter implementieren
+import { prisma } from "@/lib/prisma"
 
 export async function POST(request: NextRequest) {
   try {
@@ -30,41 +24,16 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // TODO: Hier später:
-    // 1. Daten in Datenbank speichern (z.B. PostgreSQL, MySQL, MongoDB)
-    //    Beispiel mit Prisma:
-    //    await prisma.contact.create({
-    //      data: {
-    //        name,
-    //        email,
-    //        message,
-    //        createdAt: new Date()
-    //      }
-    //    })
-    //
-    // 2. E-Mail senden (z.B. mit Nodemailer, SendGrid, Resend)
-    //    Beispiel mit Resend:
-    //    await resend.emails.send({
-    //      from: 'contact@xcoin.ws',
-    //      to: 'info@xcoin.ws',
-    //      subject: `New Contact Form Submission from ${name}`,
-    //      html: `<p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Message:</strong> ${message}</p>`
-    //    })
-    //
-    // 3. Optional: Captcha-Validierung
-    //    const captchaValid = await validateCaptcha(captchaToken)
-    //    if (!captchaValid) {
-    //      return NextResponse.json({ error: "Invalid captcha" }, { status: 400 })
-    //    }
-    //
-    // 4. Optional: Rate Limiting (z.B. mit @upstash/ratelimit)
-    //    const rateLimit = await ratelimit.limit(identifier)
-    //    if (!rateLimit.success) {
-    //      return NextResponse.json({ error: "Too many requests" }, { status: 429 })
-    //    }
+    // Daten in Datenbank speichern
+    await prisma.contact.create({
+      data: {
+        name,
+        email,
+        message,
+      },
+    })
 
-    // Logging für jetzt (später durch Datenbank ersetzen)
-    logger.info("Contact form submission", { name, email, message })
+    logger.info("Contact form submission saved to database", { name, email })
 
     return NextResponse.json(
       { message: "Message received successfully" },
@@ -72,6 +41,19 @@ export async function POST(request: NextRequest) {
     )
   } catch (error) {
     logger.error("Error processing contact form", error)
+    
+    // Prisma-spezifische Fehlerbehandlung
+    if (error instanceof Error) {
+      // Datenbankverbindungsfehler
+      if (error.message.includes("P1001") || error.message.includes("connect")) {
+        logger.error("Database connection error", error)
+        return NextResponse.json(
+          { error: "Database connection failed. Please try again later." },
+          { status: 503 }
+        )
+      }
+    }
+
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql" // Oder "mysql" für MySQL
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") // Für Migrationen (optional, falls Prisma Accelerate verwendet wird)
 }
 
 // Contact Form Submissions

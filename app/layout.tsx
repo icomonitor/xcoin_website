@@ -90,6 +90,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/xcoin-logo.png" />
       </head>
       <body className="font-sans antialiased">
+        {/* ICO Monitor Test - Verbindung prüfen */}
         <Script
           src="https://cdn.unicorn.studio/v1.3.1/unicornStudio.umd.js"
           strategy="lazyOnload"
