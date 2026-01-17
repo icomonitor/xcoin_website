@@ -54,6 +54,7 @@ export default function Footer() {
                 textShadow: '0 0 30px rgba(147, 197, 253, 0.5), 0 0 60px rgba(147, 197, 253, 0.3)',
                 filter: 'drop-shadow(0 0 12px rgba(147, 197, 253, 0.6))'
               }}
+              aria-label="Privacy is Power"
             >
               Privacy is Power.
             </h2>
@@ -91,7 +92,7 @@ export default function Footer() {
             <Link href="/" className="flex items-center gap-4">
               <Image 
                 src="/img/xcoin.svg" 
-                alt="Xcoin Logo" 
+                alt="" 
                 width={64} 
                 height={64} 
                 className="h-16 w-16 animate-spin-slow"
@@ -99,6 +100,7 @@ export default function Footer() {
                   // Filter entfernt - SVG hat bereits die blaue Farbe (#93c5fd) eingebaut
                   animationDuration: '10000ms'
                 }}
+                aria-hidden="true"
               />
               <span className="text-[2.475rem] lg:text-[3.3rem] font-bold tracking-tight text-[#93c5fd]">Xcoin</span>
             </Link>

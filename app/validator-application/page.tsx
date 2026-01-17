@@ -177,9 +177,9 @@ export default function ValidatorApplicationPage() {
             <p className="text-lg text-muted-foreground mb-4">
               Your node will be part of the most private, scalable, and quantum-secure blockchain ever built. The protocol is ready. The DAO is ready.
             </p>
-            <p className="text-xl font-[family-name:var(--font-heading)] font-bold text-foreground">
+            <h3 className="text-xl font-[family-name:var(--font-heading)] font-bold text-foreground">
               Are you?
-            </p>
+            </h3>
           </div>
         </div>
 

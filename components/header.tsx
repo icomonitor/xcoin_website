@@ -85,13 +85,14 @@ export default function Header() {
           <div className="header-logo-icon">
             <Image 
               src="/img/xcoin.svg" 
-              alt="Xcoin" 
+              alt="" 
               width={40}
               height={40}
               className="header-logo-image"
               priority
+              aria-hidden="true"
             />
-            <div className="header-logo-glow" />
+            <div className="header-logo-glow" aria-hidden="true" />
           </div>
           <span className="header-logo-text">Xcoin</span>
         </Link>
@@ -127,12 +128,13 @@ export default function Header() {
               <div className="rounded-full border border-black p-1">
                 <Image 
                   src="/img/xcoin.svg" 
-                  alt="Xcoin" 
+                  alt="" 
                   width={20}
                   height={20}
                   className="brightness-0 group-hover:animate-spin"
                   style={{ animationDuration: '10000ms' }}
                   loading="lazy"
+                  aria-hidden="true"
                 />
               </div>
             </div>
