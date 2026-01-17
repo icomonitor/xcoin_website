@@ -1435,8 +1435,11 @@ function PricingSection() {
               </button>
               {/* Close button for overlay */}
               <div className="price-overlay__close">
-                <button onClick={() => setShowOverlay(false)}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 15 14" fill="none" className="close-icon">
+                <button 
+                  onClick={() => setShowOverlay(false)}
+                  aria-label="Close overlay"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 15 14" fill="none" className="close-icon" aria-hidden="true">
                     <path d="M7.02441 0.2C7.02441 0.0895426 7.11396 0 7.22441 0H8.57441C8.68487 0 8.77441 0.0895431 8.77441 0.2V13.8C8.77441 13.9105 8.68487 14 8.57441 14H7.22441C7.11396 14 7.02441 13.9105 7.02441 13.8V0.2Z" fill="currentColor" />
                     <path d="M14.6994 6.125C14.8099 6.125 14.8994 6.21454 14.8994 6.325V7.675C14.8994 7.78546 14.8099 7.875 14.6994 7.875L1.09941 7.875C0.988957 7.875 0.899414 7.78546 0.899414 6.325C0.899414 6.21454 0.988957 6.125 1.09941 6.125L14.6994 6.125Z" fill="currentColor" />
                   </svg>
