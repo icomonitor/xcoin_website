@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")
+  url       = env("DATABASE_URL") // Sollte Prisma Accelerate URL sein: prisma+postgres://...
   directUrl = env("DIRECT_URL") // Für Migrationen (optional, falls Prisma Accelerate verwendet wird)
 }
 

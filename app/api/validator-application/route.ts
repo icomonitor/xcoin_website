@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
 
     if (existingApplication) {
       return NextResponse.json(
-        { error: "You already have a pending application" },
+        { error: "You already have a pending application with this email address" },
         { status: 400 }
       )
     }
@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
       // Duplicate entry error (unique constraint)
       if (error.message.includes("Unique constraint") || error.message.includes("P2002")) {
         return NextResponse.json(
-          { error: "You already have an application with this email address" },
+          { error: "An application with this email address already exists. Please use a different email or contact support." },
           { status: 400 }
         )
       }
@@ -86,8 +86,9 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Generischer Fehler
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "An unexpected error occurred. Please try again later." },
       { status: 500 }
     )
   }

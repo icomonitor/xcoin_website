@@ -42,11 +42,13 @@ export default function ValidatorApplicationPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+  const [errorMessage, setErrorMessage] = useState<string>("")
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
     setSubmitStatus("idle")
+    setErrorMessage("")
 
     try {
       const response = await fetch("/api/validator-application", {
@@ -56,6 +58,8 @@ export default function ValidatorApplicationPage() {
         },
         body: JSON.stringify(formData),
       })
+
+      const data = await response.json()
 
       if (response.ok) {
         setSubmitStatus("success")
@@ -71,13 +75,12 @@ export default function ValidatorApplicationPage() {
           setSubmitStatus("idle")
         }, 3000)
       } else {
-        const error = await response.json()
-        // Error wird durch logger.error() in der API-Route geloggt
         setSubmitStatus("error")
+        setErrorMessage(data.error || "There was an error submitting your application. Please try again.")
       }
     } catch (error) {
-      // Error wird durch logger.error() in der API-Route geloggt
       setSubmitStatus("error")
+      setErrorMessage("Network error. Please check your connection and try again.")
     } finally {
       setIsSubmitting(false)
     }
@@ -275,7 +278,7 @@ export default function ValidatorApplicationPage() {
 
               {submitStatus === "error" && (
                 <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-4 text-red-400">
-                  There was an error submitting your application. Please try again.
+                  {errorMessage || "There was an error submitting your application. Please try again."}
                 </div>
               )}
 
